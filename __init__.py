@@ -7,6 +7,9 @@ from nonebot.adapters.onebot.v11 import (
     GroupMessageEvent,
     Message,
     ActionFailed,
+    GROUP_ADMIN,
+    GROUP_OWNER,
+    MessageSegment
 )
 from nonebot.drivers import Driver
 from nonebot.params import CommandArg
@@ -29,7 +32,24 @@ hour = env_config.set_group_card_hour
 minute = env_config.set_group_card_minute
 
 group_card = on_command(
-    "设置群名片", aliases={"更改群名片", "修改群名片"}, permission=SUPERUSER, priority=14, block=False
+    "设置群名片",
+    aliases={"更改群名片", "修改群名片"},
+    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    priority=13,
+    block=False
+)
+view_pic = on_command(
+    "查看群名片列表",
+    aliases={"查看所有群名片"},
+    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    priority=14,
+    block=False
+)
+view_card = on_command(
+    "查看当前群名片",
+    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    priority=14,
+    block=False
 )
 
 
@@ -73,6 +93,26 @@ async def set_group_card():
                 logger.info(f"群组{g}成功设置名片 >> {card_name}")
             except ActionFailed:
                 logger.warning(f"群组{g}设置群名片失败,可能是群名片超过字数限制")
+
+
+@view_pic.handle()
+async def _(event: GroupMessageEvent):
+    img = MessageSegment.image(Path(__file__).parent / "img" / "card_num.png")
+    await view_pic.finish(message=MessageSegment.text("可以使用<更改群名片 序号>进行更改") + img)
+
+
+@view_card.handle()
+async def _(event: GroupMessageEvent):
+    group_data = read_yaml(yml_file / "group_card.yaml") or {}
+    if group_data != {}:
+        if str(event.group_id) in group_data:
+            result = group_data[str(event.group_id)]
+            result = f"当前群组设置的群名片序号有{result}"
+        else:
+            result = "当前没有设置群名片哦,请先发送<设置群名片 序号>命令进行设置吧"
+    else:
+        result = "当前没有设置群名片哦,请先发送<设置群名片 序号>命令进行设置吧"
+    await view_card.finish(result)
 
 
 @scheduler.scheduled_job("cron", hour=hour, minute=minute, id="rename_group_card")
