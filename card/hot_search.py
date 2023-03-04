@@ -1,9 +1,4 @@
-import random
-
 import requests
-from .genshin_time import genshin_version_time
-from .get_times import now_time, old_time
-from .one_word import get_one_speak
 
 URL = {
     "1": "https://tenapi.cn/v2/bilihot/",  # B站
@@ -21,8 +16,8 @@ def hot_search(num):
         return False
     for i in range(0, len(res.json()["data"]) + 1):
         result = res.json()["data"][i]["name"]
-        if len(result) <= 20:
+        if len(result) <= 16:
             return result
         else:
-            card = [genshin_version_time, old_time, now_time, get_one_speak]
-            return random.choice(card)()
+            result = result[:16]
+            return result
