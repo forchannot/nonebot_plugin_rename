@@ -115,8 +115,9 @@ async def _(event: GroupMessageEvent):
     await view_card.finish(result)
 
 
-@scheduler.scheduled_job("cron", hour=hour, minute=minute, id="rename_group_card")
+@scheduler.scheduled_job("interval", hours=hour, minutes=minute, id="rename_group_card")
 async def _():
+    logger.info("开始为列表中的群更改bot群名片")
     await set_group_card()
 
 
