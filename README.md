@@ -1,0 +1,2 @@
+# nonebot_plugin_rename
+通过定时任务更改bot所在群自己的群名片
