@@ -97,7 +97,7 @@ async def set_group_card():
 
 @view_pic.handle()
 async def _(event: GroupMessageEvent):
-    img = MessageSegment.image(Path(__file__).parent / "img" / "card_num.png")
+    img = MessageSegment.image(Path(__file__).parent / "img" / "img.png")
     await view_pic.finish(message=MessageSegment.text("可以使用<更改群名片 序号>进行更改") + img)
 
 
