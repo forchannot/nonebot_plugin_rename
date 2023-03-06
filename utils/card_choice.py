@@ -2,7 +2,7 @@ from ..card.genshin_time import genshin_version_time
 from ..card.get_times import now_time, old_time
 from ..card.hot_search import hot_search
 from ..card.one_word import get_one_speak
-
+from ..card.gaokao_time import gaokao_time
 
 def default():
     result = "没有这种类型"
@@ -21,6 +21,7 @@ def choice_card(num):
         "8": hot_search,
         "9": hot_search,
         "10": get_one_speak,
+        "11": gaokao_time,
     }.get(num, default)
     if 4 <= int(num) <= 9:
         return card_name(int(num) - 3)
