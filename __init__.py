@@ -61,7 +61,7 @@ async def get_group_card(
     group_id = str(event.group_id)
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
     if group_nicknames:
-        if not any(int(gn) > 10 for gn in group_nicknames):
+        if not any(int(gn) > 11 for gn in group_nicknames):
             if group_id in group_data:
                 group_data.pop(group_id)
             group_data[group_id] = group_nicknames
