@@ -1,7 +1,6 @@
 # [nonebot_plugin_rename](https://github.com/forchannot/nonebot_plugin_rename)
 
 通过定时任务更改bot所在群自己的群名片,内置了几种常见的群名片,欢迎**pr**新的群名片!
-
 <!-- TOC -->
 * [nonebot_plugin_rename](#nonebotpluginrename)
   * [简介](#简介)
@@ -11,9 +10,10 @@
   * [插件命令](#插件命令)
   * [插件配置项](#插件配置项)
   * [目前已实现的群名片功能](#目前已实现的群名片功能)
+  * [PR需知](#pr需知)
   * [常见问题](#常见问题)
   * [鸣谢](#鸣谢)
-<!-- TOC -->
+  <!-- TOC -->
 ## 简介
 
 通过定时任务更改bot所在群自己的群名片
@@ -88,6 +88,24 @@ plugin_dirs = ["src/plugins"]
 -- 每日一言(应该不叫每日了吧)
 </pre>
 </details>
+
+## PR需知
+
+**PS:由于本人代码比较烂,很多方法实现都比较复杂,所以对pr不是很友好,如果有更好的方法欢迎pr并指正**
+
+**群名片的生成代码**在/card/文件夹内,每种群名片(或者每类)对应一个文件
+
+当新增一个新的群名片样式时,需要在**以下几个地方**进行修改相应代码使得其生效
+
+* `/utils/card_choice.py`内的`choice_card(num)`方法内对card_name变量新增你的文件名
+
+* /`__init__.py`内
+
+  * `@group_card.handle()` 内 `if not any(int(gn) > 11 for gn in group_nicknames):`
+
+  * `@set_card.handle()` 内 `if card_number in [i + 1 for i in range(11)]:`
+
+* `/img/img.png` (可以自己随便修改样式,但文件名不能变)
 
 
 ## 常见问题

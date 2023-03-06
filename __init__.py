@@ -6,19 +6,18 @@ from nonebot.adapters.onebot.v11 import (
     Bot,
     GroupMessageEvent,
     Message,
-    ActionFailed,
     GROUP_ADMIN,
     GROUP_OWNER,
-    MessageSegment
+    MessageSegment,
 )
 from nonebot.drivers import Driver
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
-from .utils.utils import get_bot
 from .config.config import Config
 from .utils.card_choice import choice_card
 from .utils.my_yaml import read_yaml, write_yaml
+from .utils.utils import get_bot
 
 require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler
@@ -36,27 +35,31 @@ group_card = on_command(
     aliases={"更改群名片", "修改群名片"},
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=13,
-    block=False
+    block=False,
 )
 view_pic = on_command(
     "查看群名片列表",
     aliases={"查看所有群名片"},
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=14,
-    block=False
+    block=False,
 )
 view_card = on_command(
     "查看当前群名片",
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=14,
-    block=False
+    block=False,
+)
+set_card = on_command(
+    "立即更改群名片",
+    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    priority=10,
+    block=False,
 )
 
 
 @group_card.handle()
-async def get_group_card(
-    bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()
-):
+async def get_group_card(bot: Bot, event: GroupMessageEvent):
     group_nicknames = str(event.get_message()).strip().split()[1:]
     group_id = str(event.group_id)
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
@@ -86,13 +89,10 @@ async def set_group_card():
             card_number = random.choice(group_data[g])
             card_name = choice_card(card_number)
             card_name = NICKNAME + "|" + card_name
-            try:
-                await bot.set_group_card(
-                    group_id=g, user_id=int(bot.self_id), card=card_name
-                )
-                logger.info(f"群组{g}成功设置名片 >> {card_name}")
-            except ActionFailed:
-                logger.warning(f"群组{g}设置群名片失败,可能是群名片超过字数限制")
+            await bot.set_group_card(
+                group_id=g, user_id=int(bot.self_id), card=card_name
+            )
+            logger.info(f"群组{g}成功设置名片 >> {card_name}")
 
 
 @view_pic.handle()
@@ -104,6 +104,7 @@ async def _(event: GroupMessageEvent):
 @view_card.handle()
 async def _(event: GroupMessageEvent):
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
+    img = MessageSegment.image(Path(__file__).parent / "img" / "img.png")
     if group_data != {}:
         if str(event.group_id) in group_data:
             result = group_data[str(event.group_id)]
@@ -112,7 +113,21 @@ async def _(event: GroupMessageEvent):
             result = "当前没有设置群名片哦,请先发送<设置群名片 序号>命令进行设置吧"
     else:
         result = "当前没有设置群名片哦,请先发送<设置群名片 序号>命令进行设置吧"
-    await view_card.finish(result)
+    await view_card.finish(message=MessageSegment.text(result) + img)
+
+
+@set_card.handle()
+async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
+    card_number = arg.extract_plain_text().strip()
+    if card_number in [i + 1 for i in range(11)]:
+        card_name = choice_card(card_number)
+        card_name = NICKNAME + "|" + card_name
+        await bot.set_group_card(
+            group_id=event.group_id, user_id=int(bot.self_id), card=card_name
+        )
+        logger.info(f"群组{event.group_id}成功设置名片 >> {card_name}")
+    else:
+        await set_card.finish("没有这种类型的群名片哦,可以发送[查看群名片列表]命令查看吧")
 
 
 @scheduler.scheduled_job("interval", hours=hour, minutes=minute, id="rename_group_card")
