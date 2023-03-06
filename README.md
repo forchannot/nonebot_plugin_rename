@@ -1,6 +1,7 @@
 # [nonebot_plugin_rename](https://github.com/forchannot/nonebot_plugin_rename)
 
 通过定时任务更改bot所在群自己的群名片,内置了几种常见的群名片,欢迎**pr**新的群名片!
+
 <!-- TOC -->
 * [nonebot_plugin_rename](#nonebotpluginrename)
   * [简介](#简介)
@@ -9,10 +10,10 @@
   * [安装依赖](#安装依赖)
   * [插件命令](#插件命令)
   * [插件配置项](#插件配置项)
+  * [目前已实现的群名片功能](#目前已实现的群名片功能)
   * [常见问题](#常见问题)
   * [鸣谢](#鸣谢)
 <!-- TOC -->
-
 ## 简介
 
 通过定时任务更改bot所在群自己的群名片
@@ -38,20 +39,56 @@ plugin_dirs = ["src/plugins"]
 
 ## 插件命令
 
-| 命令概述             | 使用方法                                 |
-| -------------------- | ---------------------------------------- |
-| 设置群名片           | 设置群名片 序号(需空格),序号为空则为删除 |
-| 所有群名片列表的图片 | 查看群名片列表                           |
-| 查看当前群名片的设置 | 查看当前群名片                           |
+| 命令概述       | 使用方法                   |
+|------------|------------------------|
+| 设置群名片      | 设置群名片 序号(需空格),序号为空则为删除 |
+| 所有群名片列表的图片 | 查看群名片列表                |
+| 查看当前群名片的设置 | 查看当前群名片                |
 
 ## 插件配置项
 
-| 配置项                | 描述           | 类型 |
-| --------------------- | -------------- | ---- |
-| set_group_card_hour   | 间隔时间(小时) | int  |
-| set_group_card_minute | 间隔时间(分钟) | int  |
+| 配置项                   | 描述       | 类型  |
+|-----------------------|----------|-----|
+| set_group_card_hour   | 间隔时间(小时) | int |
+| set_group_card_minute | 间隔时间(分钟) | int |
 
 **请注意不要将二者都设为0!!!!!!**
+
+## 目前已实现的群名片功能
+<details>
+<summary>一图流</summary>
+<img src="https://ghproxy.com/https://raw.githubusercontent.com/forchannot/nonebot_plugin_rename/main/img/img.png" alt="help">
+</details>
+
+<details>
+<summary>时间</summary>
+<pre>
+-- 高考时间
+-- 原神版本剩余时间
+-- 北京时间
+-- 古代计时制时间
+</pre>
+</details>
+
+<details>
+<summary>热搜</summary>
+<pre>
+-- B站热搜
+-- 微博热搜
+-- 抖音热搜
+-- 百度热搜
+-- 知乎热搜
+-- 今日头条热搜
+</pre>
+</details>
+
+<details>
+<summary>一言</summary>
+<pre>
+-- 每日一言(应该不叫每日了吧)
+</pre>
+</details>
+
 
 ## 常见问题
 

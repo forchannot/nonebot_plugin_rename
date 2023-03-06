@@ -4,6 +4,7 @@ from ..card.hot_search import hot_search
 from ..card.one_word import get_one_speak
 from ..card.gaokao_time import gaokao_time
 
+
 def default():
     result = "没有这种类型"
     return result
