@@ -9,6 +9,7 @@ from nonebot.adapters.onebot.v11 import (
     GROUP_ADMIN,
     GROUP_OWNER,
     MessageSegment,
+    ActionFailed,
 )
 from nonebot.drivers import Driver
 from nonebot.params import CommandArg
@@ -89,10 +90,14 @@ async def set_group_card():
             card_number = random.choice(group_data[g])
             card_name = choice_card(card_number)
             card_name = NICKNAME + "|" + card_name
-            await bot.set_group_card(
-                group_id=g, user_id=int(bot.self_id), card=card_name
-            )
-            logger.info(f"群组{g}成功设置名片 >> {card_name}")
+            try:
+                await bot.set_group_card(
+                    group_id=g, user_id=int(bot.self_id), card=card_name
+                )
+            except AttributeError:
+                logger.warning("更改群名片", "失败,可能是机器人不存在")
+            except ActionFailed:
+                logger.warning("更改群名片", "失败,可能是机器人不存在被风控")
 
 
 @view_pic.handle()
