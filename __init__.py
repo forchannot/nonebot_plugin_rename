@@ -40,19 +40,21 @@ group_card = on_command(
 )
 view_pic = on_command(
     "查看群名片列表",
-    aliases={"查看所有群名片"},
+    aliases={"查看所有群名片", "群名片列表"},
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=14,
     block=False,
 )
 view_card = on_command(
     "查看当前群名片",
+    aliases={"当前群名片"},
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=14,
     block=False,
 )
 set_card_now = on_command(
     "立即更改群名片",
+    aliases={"立即设置群名片", "立即修改群名片"},
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=10,
     block=False,
