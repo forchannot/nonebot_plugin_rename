@@ -1,4 +1,5 @@
-from inspect import isroutine
+from inspect import iscoroutinefunction
+from nonebot.utils import is_coroutine_callable
 from ..card.genshin_time import genshin_version_time
 from ..card.get_times import now_time, old_time
 from ..card.hot_search import hot_search
@@ -25,4 +26,4 @@ def choice_card(num):
         "11": gaokao_time,
     }.get(num, default)
     arg = (int(num) - 3) if 4 <= int(num) <= 9 else ()
-    return await card_name(*arg) if isroutine(card_name) else card_name(*arg)
+    return await card_name(*arg) if iscoroutinefunction(card_name) else card_name(*arg)
