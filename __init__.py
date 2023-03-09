@@ -51,7 +51,7 @@ view_card = on_command(
     priority=14,
     block=False,
 )
-set_card = on_command(
+set_card_now = on_command(
     "立即更改群名片",
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=10,
@@ -121,10 +121,10 @@ async def _(event: GroupMessageEvent):
     await view_card.finish(message=MessageSegment.text(result) + img)
 
 
-@set_card.handle()
+@set_card_now.handle()
 async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
     card_number = arg.extract_plain_text().strip()
-    if card_number in [i + 1 for i in range(11)]:
+    if card_number in [str(i+1) for i in range(11)]:
         card_name = choice_card(card_number)
         card_name = NICKNAME + "|" + card_name
         await bot.set_group_card(
@@ -132,7 +132,7 @@ async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
         )
         logger.info(f"群组{event.group_id}成功设置名片 >> {card_name}")
     else:
-        await set_card.finish("没有这种类型的群名片哦,可以发送[查看群名片列表]命令查看吧")
+        await set_card_now.finish("没有这种类型的群名片哦,可以发送[查看群名片列表]命令查看吧")
 
 
 @scheduler.scheduled_job("interval", hours=hour, minutes=minute, id="rename_group_card")
