@@ -104,7 +104,7 @@ plugin_dirs = ["src/plugins"]
 
   * `@group_card.handle()` 内 `if not any(int(gn) > 11 for gn in group_nicknames):`
 
-  * `@set_card.handle()` 内 `if card_number in [i + 1 for i in range(11)]:`
+  * `@set_card.handle()` 内 `if card_number in [str(i + 1) for i in range(11)]:`
 
 * `/img/img.png` (可以自己随便修改样式,但文件名不能变)
 
