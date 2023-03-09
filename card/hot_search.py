@@ -1,5 +1,5 @@
 import random
-import requests
+import httpx
 
 URL = {
     "1": "https://tenapi.cn/v2/bilihot/",  # B站
@@ -11,13 +11,11 @@ URL = {
 }
 
 
-def hot_search(num):
-    res = requests.get(URL[str(num)])
-    if res.status_code != 200:
-        return "热搜api失效"
-    result = res.json()["data"][random.choice([i for i in range(10)])]["name"]
-    if len(result) <= 16:
-        return result
-    else:
-        result = result[:16]
-        return result
+async def hot_search(num: int) -> str:
+    async with httpx.AsyncClient(follow_redirects=True) as client:
+        res = await client.get(URL[str(num)])
+        if res.status_code != 200:
+            return "热搜api失效"
+        data = res.json()['data']
+        result = random.choice(data)['name']
+        return result[:16]

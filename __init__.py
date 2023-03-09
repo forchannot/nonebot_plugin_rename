@@ -88,8 +88,8 @@ async def set_group_card():
     if group_data != {}:
         for g in group_data:
             card_number = random.choice(group_data[g])
-            card_name = choice_card(card_number)
-            card_name = NICKNAME + "|" + card_name
+            card_name = await choice_card(card_number)
+            card_name = f"{NICKNAME}|{card_name}"
             try:
                 await bot.set_group_card(
                     group_id=g, user_id=int(bot.self_id), card=card_name
@@ -124,9 +124,9 @@ async def _(event: GroupMessageEvent):
 @set_card_now.handle()
 async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
     card_number = arg.extract_plain_text().strip()
-    if card_number in [str(i+1) for i in range(11)]:
-        card_name = choice_card(card_number)
-        card_name = NICKNAME + "|" + card_name
+    if card_number in list(map(str, range(1, 12))):
+        card_name = await choice_card(card_number)
+        card_name = f"{NICKNAME}|{card_name}"
         await bot.set_group_card(
             group_id=event.group_id, user_id=int(bot.self_id), card=card_name
         )
