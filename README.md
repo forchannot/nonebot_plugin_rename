@@ -90,6 +90,14 @@ plugin_dirs = ["src/plugins"]
 </pre>
 </details>
 
+<details>
+<summary>系统</summary>
+<pre>
+-- 系统内存和cpu信息
+-- Bot收发消息汇总
+</pre>
+</details>
+
 ## PR需知
 
 **PS:由于本人代码比较烂,很多方法实现都比较复杂,所以对pr不是很友好,如果有更好的方法欢迎pr并指正**
@@ -102,9 +110,9 @@ plugin_dirs = ["src/plugins"]
 
 * /`__init__.py`内
 
-  * `@group_card.handle()` 内 `if not any(int(gn) > 11 for gn in group_nicknames):`
+  * `@set_card_now.handle()` 内 `if not any(int(gn) > 11 for gn in group_nicknames):`
 
-  * `@set_card.handle()` 内 `if card_number in [str(i + 1) for i in range(11)]:`
+  * `@set_card.handle()` 内 `if card_number in list(map(str, range(1, 14))):`
 
 * `/img/img.png` (可以自己随便修改样式,但文件名不能变)
 

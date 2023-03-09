@@ -65,7 +65,7 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
     group_id = str(event.group_id)
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
     if group_nicknames:
-        if not any(int(gn) > 11 for gn in group_nicknames):
+        if not any(int(gn) > 13 for gn in group_nicknames):
             if group_id in group_data:
                 group_data.pop(group_id)
             group_data[group_id] = group_nicknames
@@ -124,7 +124,7 @@ async def _(event: GroupMessageEvent):
 @set_card_now.handle()
 async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
     card_number = arg.extract_plain_text().strip()
-    if card_number in list(map(str, range(1, 12))):
+    if card_number in list(map(str, range(1, 14))):
         card_name = await choice_card(card_number)
         card_name = f"{NICKNAME}|{card_name}"
         await bot.set_group_card(

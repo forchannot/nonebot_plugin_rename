@@ -1,5 +1,7 @@
 from inspect import iscoroutinefunction
-from nonebot.utils import is_coroutine_callable
+
+from ..card.message import get_msg
+from ..card.status import system_status
 from ..card.genshin_time import genshin_version_time
 from ..card.get_times import now_time, old_time
 from ..card.hot_search import hot_search
@@ -11,7 +13,7 @@ def default():
     return "没有这种类型"
 
 
-def choice_card(num):
+async def choice_card(num):
     card_name = {
         "1":  genshin_version_time,
         "2":  now_time,
@@ -24,6 +26,8 @@ def choice_card(num):
         "9":  hot_search,
         "10": get_one_speak,
         "11": gaokao_time,
+        "12": system_status,
+        "13": get_msg,
     }.get(num, default)
-    arg = (int(num) - 3) if 4 <= int(num) <= 9 else ()
+    arg = (int(num) - 3,) if 4 <= int(num) <= 9 else ()
     return await card_name(*arg) if iscoroutinefunction(card_name) else card_name(*arg)
