@@ -96,10 +96,8 @@ async def set_group_card():
                 await bot.set_group_card(
                     group_id=g, user_id=int(bot.self_id), card=card_name
                 )
-            except AttributeError:
-                logger.warning("更改群名片", "失败,可能是机器人不存在")
-            except ActionFailed:
-                logger.warning("更改群名片", "失败,可能是机器人不存在被风控")
+            except (AttributeError, ActionFailed):
+                logger.warning("更改群名片失败，可能是机器人不存在或被风控")
 
 
 @view_pic.handle()
@@ -126,15 +124,25 @@ async def _(event: GroupMessageEvent):
 @set_card_now.handle()
 async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
     card_number = arg.extract_plain_text().strip()
-    if card_number in list(map(str, range(1, 14))):
-        card_name = await choice_card(card_number)
-        card_name = f"{NICKNAME}|{card_name}"
+    if not card_number:
+        group_data = read_yaml(yml_file / "group_card.yaml") or {}
+        if group_data:
+            card_number = random.choice(
+                group_data.get(str(event.group_id), range(1, 14))
+            )
+        else:
+            await set_card_now.finish("本群还未设置过群名片哦")
+    elif card_number not in map(str, range(1, 14)):
+        await set_card_now.finish("没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧")
+    card_name = await choice_card(card_number)
+    card_name = f"{NICKNAME}|{card_name}"
+    try:
         await bot.set_group_card(
             group_id=event.group_id, user_id=int(bot.self_id), card=card_name
         )
         logger.info(f"群组{event.group_id}成功设置名片 >> {card_name}")
-    else:
-        await set_card_now.finish("没有这种类型的群名片哦,可以发送[查看群名片列表]命令查看吧")
+    except (AttributeError, ActionFailed):
+        logger.warning("更改群名片失败，可能是机器人不存在或被风控")
 
 
 @scheduler.scheduled_job("interval", hours=hour, minutes=minute, id="rename_group_card")
