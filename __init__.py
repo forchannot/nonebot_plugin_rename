@@ -16,7 +16,7 @@ from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
 from .config.config import Config
-from .utils.card_choice import choice_card
+from .utils.card_choice import choice_card, name_of_card
 from .utils.my_yaml import read_yaml, write_yaml
 from .utils.utils import get_bot
 
@@ -28,8 +28,7 @@ driver: Driver = get_driver()
 NICKNAME: str = list(driver.config.nickname)[0]
 yml_file = Path.cwd() / "data" / "group_card"
 env_config = Config.parse_obj(get_driver().config.dict())
-hour = env_config.set_group_card_hour
-minute = env_config.set_group_card_minute
+hour, minute = env_config.set_group_card_hour, env_config.set_group_card_minute
 
 group_card = on_command(
     "设置群名片",
@@ -62,12 +61,12 @@ set_card_now = on_command(
 
 
 @group_card.handle()
-async def get_group_card(bot: Bot, event: GroupMessageEvent):
+async def get_group_card(event: GroupMessageEvent):
     group_nicknames = str(event.get_message()).strip().split()[1:]
     group_id = str(event.group_id)
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
     if group_nicknames:
-        if not any(int(gn) > 13 for gn in group_nicknames):
+        if not any(int(gn) > len(name_of_card) for gn in group_nicknames):
             if group_id in group_data:
                 group_data.pop(group_id)
             group_data[group_id] = group_nicknames
@@ -96,6 +95,7 @@ async def set_group_card():
                 await bot.set_group_card(
                     group_id=g, user_id=int(bot.self_id), card=card_name
                 )
+                logger.info("更改群名片", f"群{g}更名为{card_name}")
             except (AttributeError, ActionFailed):
                 logger.warning("更改群名片失败，可能是机器人不存在或被风控")
 
@@ -128,7 +128,7 @@ async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
         group_data = read_yaml(yml_file / "group_card.yaml") or {}
         if group_data:
             card_number = random.choice(
-                group_data.get(str(event.group_id), range(1, 14))
+                group_data.get(str(event.group_id), range(1, len(name_of_card) + 1))
             )
         else:
             await set_card_now.finish("本群还未设置过群名片哦")

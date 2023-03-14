@@ -11,7 +11,7 @@ URL = {
 }
 
 
-async def hot_search(num: int) -> str:
+async def hot(num: int) -> str:
     async with httpx.AsyncClient(follow_redirects=True) as client:
         res = await client.get(URL[str(num)])
         if res.status_code != 200:

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def gaokao_time():
+def gk():
     # 基准时间
     baseTime = (
         datetime.strptime("2023-6-7 9:00:00", "%Y-%m-%d %H:%M:%S").timestamp() * 1000

@@ -108,13 +108,8 @@ plugin_dirs = ["src/plugins"]
 
 当新增一个新的群名片样式时,需要在**以下几个地方**进行修改相应代码使得其生效
 
-* `/utils/card_choice.py`内的`choice_card(num)`方法内对card_name变量新增你的文件名
+* `/utils/card_choice.py`内的`name_of_card`变量新增你的文件名
 
-* /`__init__.py`内
-
-  * `@group_card.handle()` 内 `if not any(int(gn) > 13 for gn in group_nicknames):`
-
-  * `@set_card_now.handle()` 内 `elif card_number not in map(str, range(1, 14)):`
 
 * `/img/img.png` (可以自己随便修改样式,但文件名不能变)
 
