@@ -1,7 +1,7 @@
 import random
 from pathlib import Path
 
-from nonebot import get_driver, on_command, require, logger
+from nonebot import get_driver, on_command, require, logger, get_bots
 from nonebot.adapters.onebot.v11 import (
     Bot,
     GroupMessageEvent,
@@ -58,46 +58,57 @@ set_card_now = on_command(
     priority=10,
     block=False,
 )
+del_group_card = on_command(
+    "删除群名片",
+    aliases={"删除本群群名片"},
+    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    priority=10,
+    block=False,
+)
 
 
 @group_card.handle()
-async def get_group_card(event: GroupMessageEvent):
+async def get_group_card(bot: Bot, event: GroupMessageEvent):
+    # 解析参数
     group_nicknames = str(event.get_message()).strip().split()[1:]
+    if not group_nicknames:
+        await group_card.finish("请输入你想要设置的群名片序号")
+        return
     group_id = str(event.group_id)
+    bot_id = bot.self_id
+    # 读取群名片数据
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
-    if group_nicknames:
-        if not any(int(gn) > len(name_of_card) for gn in group_nicknames):
-            if group_id in group_data:
-                group_data.pop(group_id)
-            group_data[group_id] = group_nicknames
-            write_yaml(yml_file / "group_card.yaml", group_data)
-            await group_card.finish(f"已为你更改该群群名片序号为{group_nicknames}")
-        else:
-            await group_card.finish("没有这种群名片哦")
+    bot_group_data = group_data.get(bot_id, {})
+    group_nicknames_valid = not any(
+        int(gn) > len(name_of_card) for gn in group_nicknames
+    )
+    # 更新群名片数据
+    if group_nicknames_valid:
+        bot_group_data[group_id] = group_nicknames
+        write_yaml(yml_file / "group_card.yaml", group_data)
+        await group_card.finish(f"已为你更改该群群名片序号为{group_nicknames}")
     else:
-        if group_id in group_data:
-            group_data.pop(group_id)
-            write_yaml(yml_file / "group_card.yaml", group_data)
-            await group_card.finish("已为你删除该群群名片设置")
-        else:
-            await group_card.finish("请输入你想要设置的群名片序号")
+        await group_card.finish("没有这种群名片哦")
 
 
 async def set_group_card():
-    bot = get_bot()
+    bots = get_bots()
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
     if group_data != {}:
-        for g in group_data:
-            card_number = random.choice(group_data[g])
-            card_name = await choice_card(card_number)
-            card_name = f"{NICKNAME}|{card_name}"
-            try:
-                await bot.set_group_card(
-                    group_id=g, user_id=int(bot.self_id), card=card_name
-                )
-                logger.info("更改群名片", f"群{g}更名为{card_name}")
-            except (AttributeError, ActionFailed):
-                logger.warning("更改群名片失败，可能是机器人不存在或被风控")
+        for bot_id, bt in bots.items():
+            for gid, group_info in group_data.items():
+                if bot_id == gid:
+                    for group_id, group_nicks in group_info.items():
+                        card_number = random.choice(group_nicks)
+                        card_name = await choice_card(card_number)
+                        card_name = f"{NICKNAME}|{card_name}"
+                        try:
+                            await bt.set_group_card(
+                                group_id=group_id, user_id=int(bot_id), card=card_name
+                            )
+                            logger.info(f"群{group_id}的bot群名片 >> 更名为{card_name}")
+                        except (AttributeError, ActionFailed):
+                            logger.warning("更改群名片失败，可能是机器人不存在或被风控")
 
 
 @view_pic.handle()
@@ -125,24 +136,30 @@ async def _(event: GroupMessageEvent):
 async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
     card_number = arg.extract_plain_text().strip()
     if not card_number:
-        group_data = read_yaml(yml_file / "group_card.yaml") or {}
-        if group_data:
-            card_number = random.choice(
-                group_data.get(str(event.group_id), range(1, len(name_of_card) + 1))
-            )
-        else:
-            await set_card_now.finish("本群还未设置过群名片哦")
+        await set_card_now.finish("请输入序号或序号输入错误")
     elif card_number not in map(str, range(1, 14)):
         await set_card_now.finish("没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧")
-    card_name = await choice_card(card_number)
-    card_name = f"{NICKNAME}|{card_name}"
-    try:
-        await bot.set_group_card(
-            group_id=event.group_id, user_id=int(bot.self_id), card=card_name
-        )
-        logger.info(f"群组{event.group_id}成功设置名片 >> {card_name}")
-    except (AttributeError, ActionFailed):
-        logger.warning("更改群名片失败，可能是机器人不存在或被风控")
+    else:
+        card_name = await choice_card(card_number)
+        card_name = f"{NICKNAME}|{card_name}"
+        try:
+            await bot.set_group_card(
+                group_id=event.group_id, user_id=int(bot.self_id), card=card_name
+            )
+            logger.info(f"群组{event.group_id}成功设置名片 >> {card_name}")
+        except (AttributeError, ActionFailed):
+            logger.warning("更改群名片失败，可能是机器人不存在或被风控")
+
+
+@del_group_card.handle()
+async def _(bot: Bot, event: GroupMessageEvent):
+    group_data = read_yaml(yml_file / "group_card.yaml") or {}
+    if bot.self_id in group_data and str(event.group_id) in group_data[bot.self_id]:
+        group_data[bot.self_id].pop(str(event.group_id))
+        write_yaml(yml_file / "group_card.yaml", group_data)
+        await del_group_card.finish("删除成功")
+    else:
+        await del_group_card.finish("本群还没设置过群名片哦")
 
 
 @scheduler.scheduled_job("interval", hours=hour, minutes=minute, id="rename_group_card")
