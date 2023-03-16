@@ -78,13 +78,14 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
     bot_id = bot.self_id
     # 读取群名片数据
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
-    bot_group_data = group_data.get(bot_id, {})
     group_nicknames_valid = not any(
         int(gn) > len(name_of_card) for gn in group_nicknames
     )
     # 更新群名片数据
     if group_nicknames_valid:
-        bot_group_data[group_id] = group_nicknames
+        group_data.setdefault(bot_id, {})
+        group_data[bot_id].setdefault(group_id, {})
+        group_data[bot_id][group_id] = group_nicknames
         write_yaml(yml_file / "group_card.yaml", group_data)
         await group_card.finish(f"已为你更改该群群名片序号为{group_nicknames}")
     else:
