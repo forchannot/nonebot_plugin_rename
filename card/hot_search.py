@@ -1,6 +1,10 @@
 import random
 import httpx
 
+from typing import Any
+
+from nonebot import logger
+
 URL = {
     "1": "https://tenapi.cn/v2/bilihot/",  # B站
     "2": "https://tenapi.cn/v2/weibohot",  # 微博
@@ -11,11 +15,15 @@ URL = {
 }
 
 
-async def hot(num: int) -> str:
+async def hot(num: int) -> Any | None:
     async with httpx.AsyncClient(follow_redirects=True) as client:
-        res = await client.get(URL[str(num)])
-        if res.status_code != 200:
-            return "热搜api失效"
-        data = res.json()['data']
-        result = random.choice(data)['name']
-        return result[:16]
+        try:
+            res = await client.get(URL[str(num)])
+            if res.status_code != 200:
+                return "热搜api失效"
+            data = res.json()["data"]
+            result = random.choice(data)["name"]
+            return result[:16]
+        except Exception as e:
+            logger.warning(f"获取热搜失败: {e}")
+            return None

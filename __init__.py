@@ -18,7 +18,6 @@ from nonebot.permission import SUPERUSER
 from .config.config import Config
 from .utils.card_choice import choice_card, name_of_card
 from .utils.my_yaml import read_yaml, write_yaml
-from .utils.utils import get_bot
 
 require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler
@@ -71,6 +70,7 @@ del_group_card = on_command(
 async def get_group_card(bot: Bot, event: GroupMessageEvent):
     # 解析参数
     group_nicknames = str(event.get_message()).strip().split()[1:]
+    nicks = " ".join(group_nicknames)
     if not group_nicknames:
         await group_card.finish("请输入你想要设置的群名片序号")
         return
@@ -87,7 +87,7 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
         group_data[bot_id].setdefault(group_id, {})
         group_data[bot_id][group_id] = group_nicknames
         write_yaml(yml_file / "group_card.yaml", group_data)
-        await group_card.finish(f"已为你更改该群群名片序号为{group_nicknames}")
+        await group_card.finish(f"已为你更改该群群名片序号为{nicks}")
     else:
         await group_card.finish("没有这种群名片哦")
 
@@ -102,14 +102,19 @@ async def set_group_card():
                     for group_id, group_nicks in group_info.items():
                         card_number = random.choice(group_nicks)
                         card_name = await choice_card(card_number)
-                        card_name = f"{NICKNAME}|{card_name}"
-                        try:
-                            await bt.set_group_card(
-                                group_id=group_id, user_id=int(bot_id), card=card_name
-                            )
-                            logger.info(f"群{group_id}的bot群名片 >> 更名为{card_name}")
-                        except (AttributeError, ActionFailed):
-                            logger.warning("更改群名片失败，可能是机器人不存在或被风控")
+                        if card_name is not None:
+                            card_name = f"{NICKNAME}|{card_name}"
+                            try:
+                                await bt.set_group_card(
+                                    group_id=group_id,
+                                    user_id=int(bot_id),
+                                    card=card_name,
+                                )
+                                logger.info(f"群{group_id}的bot群名片 >> 更名为{card_name}")
+                            except (AttributeError, ActionFailed):
+                                logger.warning("更改群名片失败，可能是机器人不存在或被风控")
+                        else:
+                            logger.warning(f"群{group_id}名片更改失败")
 
 
 @view_pic.handle()

@@ -1,8 +1,15 @@
+from typing import Any
+
 import httpx
+from nonebot import logger
 
 
-async def get_one_speak() -> str:
+async def get_one_speak() -> Any | None:
     async with httpx.AsyncClient(follow_redirects=True) as client:
-        res = await client.get("https://tenapi.cn/v2/yiyan?format=json")
-        data = res.json()["data"]["hitokoto"]
-        return data[:16]
+        try:
+            res = await client.get("https://v1.hitokoto.cn/")
+            data = res.json()["hitokoto"]
+            return data[:16]
+        except Exception as e:
+            logger.warning(f"获取一言失败: {e}")
+            return None
