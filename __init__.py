@@ -124,13 +124,14 @@ async def _(event: GroupMessageEvent):
 
 
 @view_card.handle()
-async def _(event: GroupMessageEvent):
+async def _(bot: Bot, event: GroupMessageEvent):
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
     img = MessageSegment.image(Path(__file__).parent / "img" / "img.png")
     if group_data != {}:
-        if str(event.group_id) in group_data:
-            result = group_data[str(event.group_id)]
-            result = f"当前群组设置的群名片序号有{result}"
+        if str(event.group_id) in group_data[bot.self_id]:
+            result = group_data[bot.self_id][str(event.group_id)]
+            nicks = " ".join(result)
+            result = f"当前群组设置的群名片序号有{nicks}"
         else:
             result = "当前没有设置群名片哦,请先发送<设置群名片 序号>命令进行设置吧"
     else:
