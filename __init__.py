@@ -25,10 +25,15 @@ require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler
 
 driver: Driver = get_driver()
-NICKNAME: str = list(driver.config.nickname)[0] or "Bot"
-yml_file = Path.cwd() / "data" / "group_card"
 env_config = Config.parse_obj(get_driver().config.dict())
 hour, minute = env_config.set_group_card_hour, env_config.set_group_card_minute
+NICKNAME: str = (
+    list(driver.config.nickname)[0]
+    if env_config.self_name is None
+    else env_config.self_name
+)
+yml_file = Path.cwd() / "data" / "group_card"
+
 
 group_card = on_command(
     "设置群名片",
@@ -106,12 +111,14 @@ async def set_group_card():
             continue
         for group_id, group_nicks in group_info.items():
             card_name = await choice_card(random.choice(group_nicks))
+            if env_config.use_nickname_front:
+                card_name = f"{NICKNAME}|{card_name}"
             if card_name:
                 tasks.append(
                     bt.set_group_card(
                         group_id=group_id,
                         user_id=int(bot_id),
-                        card=f"{NICKNAME}|{card_name}",
+                        card=card_name,
                     )
                 )
                 logger.info(f"即将为群{group_id}的bot设置群名片后缀{card_name}")
@@ -152,7 +159,8 @@ async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
     elif card_number not in map(str, range(1, 14)):
         await set_card_now.finish("没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧")
     card_name = await choice_card(card_number)
-    card_name = f"{NICKNAME}|{card_name}"
+    if env_config.use_nickname_front:
+        card_name = f"{NICKNAME}|{card_name}"
     try:
         await bot.set_group_card(
             group_id=event.group_id, user_id=int(bot.self_id), card=card_name
