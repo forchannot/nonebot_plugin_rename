@@ -74,14 +74,13 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
     nicks = " ".join(group_nicknames)
     if not group_nicknames:
         await group_card.finish("请输入你想要设置的群名片序号")
-        return
     group_id = str(event.group_id)
     bot_id = bot.self_id
     # 读取群名片数据
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
     group_nicknames_valid = not any(
         int(gn) > len(name_of_card) for gn in group_nicknames
-    )
+    )  # 判断用户输入的群名片序号是否有效
     # 更新群名片数据
     if group_nicknames_valid:
         group_data.setdefault(bot_id, {})
@@ -102,7 +101,7 @@ async def set_group_card():
     for bot_id, bt in bots.items():
         group_info = group_data.get(bot_id, {})
         if not group_info:
-            return
+            continue
         for group_id, group_nicks in group_info.items():
             card_name = await choice_card(random.choice(group_nicks))
             if card_name:
@@ -123,7 +122,7 @@ async def set_group_card():
 @view_pic.handle()
 async def _(event: GroupMessageEvent):
     img = MessageSegment.image(Path(__file__).parent / "img" / "img.png")
-    await view_pic.finish(message=MessageSegment.text("可以使用<更改群名片 序号>进行更改") + img)
+    await view_pic.finish(message=MessageSegment.text("可以使用<更改群名片 序号>进行设置") + img)
 
 
 @view_card.handle()
