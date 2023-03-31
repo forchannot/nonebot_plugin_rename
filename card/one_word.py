@@ -1,10 +1,10 @@
-from typing import Any
+# Description: 获取一言
 
 import httpx
 from nonebot import logger
 
 
-async def get_one_speak() -> Any | None:
+async def get_one_speak() -> str | None:
     async with httpx.AsyncClient(follow_redirects=True) as client:
         try:
             res = await client.get("https://v1.hitokoto.cn/")

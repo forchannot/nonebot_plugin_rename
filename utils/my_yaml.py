@@ -1,8 +1,10 @@
+# Description: YAML文件处理
+
 import yaml
 
 
 # 读取Yaml文件方法
-def read_yaml(yaml_path):
+def read_yaml(yaml_path) -> dict:
     with open(yaml_path, encoding="utf-8", mode="r") as f:
         result = yaml.load(stream=f, Loader=yaml.FullLoader)
         return result

@@ -1,7 +1,7 @@
+# Description: 获取热搜
+
 import random
 import httpx
-
-from typing import Any
 
 from nonebot import logger
 
@@ -15,7 +15,7 @@ URL = {
 }
 
 
-async def hot(num: int) -> Any | None:
+async def hot(num: int) -> str | None:
     async with httpx.AsyncClient(follow_redirects=True) as client:
         try:
             res = await client.get(URL[str(num)])

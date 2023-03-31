@@ -1,4 +1,4 @@
-# 插件的配置文件
+# Description: 插件的配置文件
 from pydantic import Extra, BaseModel
 
 

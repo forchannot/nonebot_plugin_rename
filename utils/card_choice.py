@@ -1,36 +1,15 @@
-from inspect import iscoroutinefunction
-from ..card import (
-    message,
-    status,
-    genshin_time,
-    get_times,
-    hot_search,
-    one_word,
-    gaokao_time,
-)
+# Description: 根据卡片数字获取卡片名称
 
-name_of_card = {
-    "1": genshin_time.genshin_version_time,
-    "2": get_times.now_time,
-    "3": get_times.old_time,
-    "4": hot_search.hot,
-    "5": hot_search.hot,
-    "6": hot_search.hot,
-    "7": hot_search.hot,
-    "8": hot_search.hot,
-    "9": hot_search.hot,
-    "10": one_word.get_one_speak,
-    "11": gaokao_time.gk,
-    "12": status.system_status,
-    "13": message.get_msg,
-}
+from inspect import iscoroutinefunction
+
+from .card_name import name_of_card
 
 
 def default():
     return "没有这种类型"
 
 
-async def choice_card(num):
+async def choice_card(num) -> str:
     card_name_choice = name_of_card.get(num, default)
     arg = (int(num) - 3,) if 4 <= int(num) <= 9 else ()
     return (

@@ -1,3 +1,5 @@
+# Description: 获取机器人所在系统状态
+
 import asyncio
 import psutil
 

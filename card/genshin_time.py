@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def genshin_version_time():
+def genshin_version_time() -> str:
     # 基准版本
     Version = 3.5
     baseTime = (

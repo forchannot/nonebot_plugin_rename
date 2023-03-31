@@ -1,7 +1,9 @@
+# Description: 获取高考倒计时
+
 from datetime import datetime
 
 
-def gk():
+def gk() -> str:
     # 基准时间
     baseTime = (
         datetime.strptime("2023-6-7 9:00:00", "%Y-%m-%d %H:%M:%S").timestamp() * 1000

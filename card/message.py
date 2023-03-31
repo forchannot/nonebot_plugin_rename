@@ -1,7 +1,9 @@
+# Description: 获取机器人收发消息数量
+
 from nonebot import get_bot
 
 
-async def get_msg():
+async def get_msg() -> str:
     bot = get_bot()
     bot_status = await bot.get_status()
     if bot_status := bot_status.get('stat'):
