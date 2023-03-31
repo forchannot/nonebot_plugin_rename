@@ -1,3 +1,4 @@
+import asyncio
 import random
 from pathlib import Path
 
@@ -24,7 +25,7 @@ from nonebot_plugin_apscheduler import scheduler
 
 scheduler = scheduler
 driver: Driver = get_driver()
-NICKNAME: str = list(driver.config.nickname)[0]
+NICKNAME: str = list(driver.config.nickname)[0] or "Bot"
 yml_file = Path.cwd() / "data" / "group_card"
 env_config = Config.parse_obj(get_driver().config.dict())
 hour, minute = env_config.set_group_card_hour, env_config.set_group_card_minute
@@ -95,26 +96,28 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
 async def set_group_card():
     bots = get_bots()
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
-    if group_data != {}:
-        for bot_id, bt in bots.items():
-            for gid, group_info in group_data.items():
-                if bot_id == gid:
-                    for group_id, group_nicks in group_info.items():
-                        card_number = random.choice(group_nicks)
-                        card_name = await choice_card(card_number)
-                        if card_name is not None:
-                            card_name = f"{NICKNAME}|{card_name}"
-                            try:
-                                await bt.set_group_card(
-                                    group_id=group_id,
-                                    user_id=int(bot_id),
-                                    card=card_name,
-                                )
-                                logger.info(f"群{group_id}的bot群名片 >> 更名为{card_name}")
-                            except (AttributeError, ActionFailed):
-                                logger.warning("更改群名片失败，可能是机器人不存在或被风控")
-                        else:
-                            logger.warning(f"群{group_id}名片更改失败")
+    if not group_data:
+        return
+    tasks = []
+    for bot_id, bt in bots.items():
+        group_info = group_data.get(bot_id, {})
+        if not group_info:
+            return
+        for group_id, group_nicks in group_info.items():
+            card_name = await choice_card(random.choice(group_nicks))
+            if card_name:
+                task = bt.set_group_card(
+                    group_id=group_id,
+                    user_id=int(bot_id),
+                    card=f"{NICKNAME}|{card_name}",
+                )
+                tasks.append(task)
+                logger.info(f"即将为群{group_id}的bot设置群名片后缀{card_name}")
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    for group_info, result in zip(group_data.values(), results):
+        group_id = next(iter(group_info))
+        if isinstance(result, Exception):
+            logger.warning(f"群{group_id}名片更改失败，错误信息：{result}")
 
 
 @view_pic.handle()
