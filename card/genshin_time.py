@@ -3,9 +3,9 @@ from datetime import datetime
 
 def genshin_version_time() -> str:
     # 基准版本
-    Version = 3.5
+    Version = 3.6
     baseTime = (
-        datetime.strptime("2023-3-1 11:00:00", "%Y-%m-%d %H:%M:%S").timestamp() * 1000
+        datetime.strptime("2023-4-12 11:00:00", "%Y-%m-%d %H:%M:%S").timestamp() * 1000
     )
     nowTime = datetime.now().timestamp() * 1000
     # 获取持续时间
