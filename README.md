@@ -63,7 +63,7 @@ plugin_dirs = ["src/plugins"]
 ## 目前已实现的群名片功能
 <details>
 <summary>一图流</summary>
-<img src="https://ghproxy.com/https://raw.githubusercontent.com/forchannot/nonebot_plugin_rename/main/img/img.png" alt="help">
+<img src="https://cdn.staticaly.com/gh/forchannot/mypicgo@main/20230418/image.1l16rm6rtbkw.jpg" alt="help">
 </details>
 
 <details>
