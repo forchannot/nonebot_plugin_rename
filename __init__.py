@@ -30,7 +30,7 @@ hour, minute = env_config.set_group_card_hour, env_config.set_group_card_minute
 if driver.config.nickname:
     NICKNAME = env_config.self_name if env_config.self_name else list(driver.config.nickname)[0]
 else:
-    NICKNAME = env_config.self_name if env_config.self_name else "default_nickname"
+    NICKNAME = env_config.self_name if env_config.self_name else "bot"
 yml_file = Path.cwd() / "data" / "group_card"
 
 
