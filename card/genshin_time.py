@@ -1,3 +1,4 @@
+# Description: 获取原神版本剩余时间
 from datetime import datetime
 
 

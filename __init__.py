@@ -1,7 +1,6 @@
 import asyncio
 import random
 from pathlib import Path
-
 from nonebot import get_driver, on_command, require, logger, get_bots
 from nonebot.adapters.onebot.v11 import (
     Bot,
@@ -16,6 +15,7 @@ from nonebot.drivers import Driver
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
+from .utils.draw import generate_card_image
 from .config.config import Config
 from .utils.card_choice import choice_card
 from .utils.card_name import name_of_card
@@ -27,11 +27,10 @@ from nonebot_plugin_apscheduler import scheduler
 driver: Driver = get_driver()
 env_config = Config.parse_obj(get_driver().config.dict())
 hour, minute = env_config.set_group_card_hour, env_config.set_group_card_minute
-NICKNAME: str = (
-    list(driver.config.nickname)[0]
-    if env_config.self_name is None
-    else env_config.self_name
-)
+if driver.config.nickname:
+    NICKNAME = env_config.self_name if env_config.self_name else list(driver.config.nickname)[0]
+else:
+    NICKNAME = env_config.self_name if env_config.self_name else "default_nickname"
 yml_file = Path.cwd() / "data" / "group_card"
 
 
@@ -105,7 +104,7 @@ async def set_group_card():
     if not group_data:
         return
     tasks = []
-    for bot_id, bt in bots.items():
+    for bot_id, bot_case in bots.items():
         group_info = group_data.get(bot_id, {})
         if not group_info:
             continue
@@ -115,7 +114,7 @@ async def set_group_card():
                 card_name = f"{NICKNAME}|{card_name}"
             if card_name:
                 tasks.append(
-                    bt.set_group_card(
+                    bot_case.set_group_card(
                         group_id=group_id,
                         user_id=int(bot_id),
                         card=card_name,
@@ -132,7 +131,7 @@ async def set_group_card():
 # on_command "查看群名片列表"
 @view_pic.handle()
 async def _(event: GroupMessageEvent):
-    img = MessageSegment.image(Path(__file__).parent / "img" / "img.png")
+    img = MessageSegment.image(generate_card_image())
     await view_pic.finish(message=MessageSegment.text("可以使用<更改群名片 序号>进行设置") + img)
 
 
@@ -140,7 +139,7 @@ async def _(event: GroupMessageEvent):
 @view_card.handle()
 async def _(bot: Bot, event: GroupMessageEvent):
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
-    img = MessageSegment.image(Path(__file__).parent / "img" / "img.png")
+    img = MessageSegment.image(generate_card_image())
     if str(event.group_id) in group_data.get(bot.self_id, {}):
         result = group_data[bot.self_id][str(event.group_id)]
         nicks = " ".join(result)

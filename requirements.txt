@@ -3,3 +3,4 @@ nonebot_plugin_apscheduler
 psutil~=5.9.3
 pyyaml~=6.0
 pydantic~=1.9.2
+Pillow~=9.4.0
