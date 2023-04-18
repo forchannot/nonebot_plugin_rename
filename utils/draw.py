@@ -30,9 +30,7 @@ def generate_card_image(
             draw.text((220, i * 50 + 65), content[1], font=font, fill="black")
             # 绘制分割线
             draw.line((0, (i + 1) * 50 + 50, 800, (i + 1) * 50 + 50), fill="black")
-    # 保存图片
+    # 返回base64编码后的图片字符串
     img_buffer = BytesIO()
     img.save(img_buffer, format="PNG")
-    img_str = base64.b64encode(img_buffer.getvalue()).decode()
-    # 返回base64编码后的图片字符串
-    return img_str
+    return img_buffer.getvalue()
