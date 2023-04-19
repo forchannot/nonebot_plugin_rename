@@ -10,13 +10,13 @@
 
 _✨ 通过定时任务更改bot所在群自己的群名片,内置了几种常见的群名片并且初步支持了多bot,欢迎**pr**新的群名片! ✨_
 
-<a href="./LICENSE">
-    <img src="https://img.shields.io/github/license/forchannot/nonebot-plugin-rename.svg" alt="license">
+<a href="https://raw.githubusercontent.com/nonebot/nonebot2/master/LICENSE">
+    <img src="https://img.shields.io/github/license/forchannot/nonebot_plugin_rename" alt="license">
 </a>
 <a href="https://pypi.python.org/pypi/nonebot-plugin-rename">
     <img src="https://img.shields.io/pypi/v/nonebot-plugin-rename.svg" alt="pypi">
 </a>
-<img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="python">
+<img src="https://img.shields.io/badge/python-3.8+-yellow.svg" alt="python">
 
 </div>
 
