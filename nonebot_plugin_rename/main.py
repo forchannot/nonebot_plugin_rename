@@ -15,11 +15,8 @@ from nonebot.drivers import Driver
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
-from .utils.draw import generate_card_image
-from .config.config import Config
-from .utils.card_choice import choice_card
-from .utils.card_name import name_of_card
-from .utils.my_yaml import read_yaml, write_yaml
+from .config import Config
+from .utils import *
 
 require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler
@@ -109,18 +106,18 @@ async def set_group_card():
         if not group_info:
             continue
         for group_id, group_nicks in group_info.items():
-            card_name = await choice_card(random.choice(group_nicks))
+            card_names = await choice_card(random.choice(group_nicks))
             if env_config.use_nickname_front:
-                card_name = f"{NICKNAME}|{card_name}"
-            if card_name:
+                card_names = f"{NICKNAME}|{card_names}"
+            if card_names:
                 tasks.append(
                     bot_case.set_group_card(
                         group_id=group_id,
                         user_id=int(bot_id),
-                        card=card_name,
+                        card=card_names,
                     )
                 )
-                logger.info(f"即将为群{group_id}的bot设置群名片后缀{card_name}")
+                logger.info(f"即将为群{group_id}的bot设置群名片后缀{card_names}")
     results = await asyncio.gather(*tasks, return_exceptions=True)
     for group_info, result in zip(group_data.values(), results):
         group_id = next(iter(group_info))
@@ -157,14 +154,14 @@ async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
         await set_card_now.finish("请输入序号或序号输入错误")
     elif card_number not in map(str, range(1, 14)):
         await set_card_now.finish("没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧")
-    card_name = await choice_card(card_number)
+    card_names = await choice_card(card_number)
     if env_config.use_nickname_front:
-        card_name = f"{NICKNAME}|{card_name}"
+        card_names = f"{NICKNAME}|{card_names}"
     try:
         await bot.set_group_card(
-            group_id=event.group_id, user_id=int(bot.self_id), card=card_name
+            group_id=event.group_id, user_id=int(bot.self_id), card=card_names
         )
-        logger.info(f"群组{event.group_id}成功设置名片 >> {card_name}")
+        logger.info(f"群组{event.group_id}成功设置名片 >> {card_names}")
     except (AttributeError, ActionFailed):
         logger.warning("更改群名片失败，可能是机器人不存在或被风控")
 

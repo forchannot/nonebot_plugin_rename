@@ -1,14 +1,6 @@
 # Description: 群名片序号对应的函数
 
-from ..card import (
-    genshin_time,
-    get_times,
-    hot_search,
-    one_word,
-    gaokao_time,
-    status,
-    message,
-)
+from ..card import *
 
 name_of_card = {
     "1": genshin_time.genshin_version_time,

@@ -1,43 +1,74 @@
-# [nonebot_plugin_rename](https://github.com/forchannot/nonebot_plugin_rename)
+<div align="center">
+  <a href="https://v2.nonebot.dev/store"><img src="https://ghproxy.com/https://github.com/A-kirami/nonebot-plugin-template/blob/resources/nbp_logo.png" width="180" height="180" alt="NoneBotPluginLogo"></a>
+  <br>
+  <p><img src="https://ghproxy.com/https://github.com/A-kirami/nonebot-plugin-template/blob/resources/NoneBotPlugin.svg" width="240" alt="NoneBotPluginText"></p>
+</div>
 
-通过定时任务更改bot所在群自己的群名片,内置了几种常见的群名片并且初步支持了多bot,欢迎**pr**新的群名片!
+<div align="center">
+
+# nonebot-plugin-rename
+
+_✨ 通过定时任务更改bot所在群自己的群名片,内置了几种常见的群名片并且初步支持了多bot,欢迎**pr**新的群名片! ✨_
+
+<a href="./LICENSE">
+    <img src="https://img.shields.io/github/license/forchannot/nonebot-plugin-rename.svg" alt="license">
+</a>
+<a href="https://pypi.python.org/pypi/nonebot-plugin-rename">
+    <img src="https://img.shields.io/pypi/v/nonebot-plugin-rename.svg" alt="pypi">
+</a>
+<img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="python">
+
+</div>
+
 <!-- TOC -->
-* [nonebot_plugin_rename](#nonebotpluginrename)
-  * [简介](#简介)
-  * [许可](#许可)
-  * [安装方法](#安装方法)
-  * [安装依赖](#安装依赖)
-  * [插件命令](#插件命令)
-  * [插件配置项](#插件配置项)
-  * [目前已实现的群名片功能](#目前已实现的群名片功能)
-  * [PR需知](#pr需知)
-  * [常见问题](#常见问题)
-  * [鸣谢](#鸣谢)
-  <!-- TOC -->
-## 简介
+* [nonebot-plugin-rename](#nonebot-plugin-rename)
+  * [📖简介](#简介)
+  * [🔐许可](#许可)
+  * [💿 安装方法](#-安装方法)
+  * [🏷️插件命令](#插件命令)
+  * [⚙️插件配置项](#插件配置项)
+  * [🎉目前已实现的群名片功能](#目前已实现的群名片功能)
+  * [🧐PR需知](#pr需知)
+  * [🔍️常见问题](#常见问题)
+  * [🔥鸣谢](#鸣谢)
+<!-- TOC -->
+
+## 📖简介
 
 通过定时任务更改bot(s)所在群自己的群名片
 
-## 许可
+## 🔐许可
 
-[GPL-3.0](https://github.com/forchannot/genshin_artifact/blob/main/LICENSE)
+[MIT](https://github.com/forchannot/nonebot-plugin-rename/blob/main/LICENSE)
 
-## 安装方法
+## 💿 安装方法
 
-打开你nonebot根目录的pyproject.toml文件，找到下列代码中`plugin_dirs =`一项，将本项目git clone(推荐)或者直接Download Zip并解压)到该代码指示的目录去，推荐使用git clone
+<details>
+<summary>使用 nb-cli 安装</summary>
+在 nonebot2 项目的根目录下打开命令行, 输入以下指令即可安装
+
+    nb plugin install nonebot-plugin-rename
+</details>
+
+<details>
+<summary>pip</summary>
+
+    pip install nonebot-plugin-rename
+
+打开 nonebot2 项目根目录下的 `pyproject.toml` 文件, 在 `[tool.nonebot]` 部分追加写入
+
+    plugins = ["nonebot_plugin_rename"]
 
 ```
 [tool.nonebot]
 plugins = []
 plugin_dirs = ["src/plugins"]
 ```
-
-## 安装依赖
-
-进入你的机器人所在的虚拟环境，到本项目根目录执行`pip install -r requirements.txt`
+</details>
 
 
-## 插件命令
+
+## 🏷️插件命令
 
 | 使用方法       | 命令概述                             |
 |------------|----------------------------------|
@@ -47,7 +78,7 @@ plugin_dirs = ["src/plugins"]
 | 立即更改群名片 序号 | 立即更改当前群组bot名片，后面仅可跟一个序号（bot无返回值） |
 | 删除群名片      | 删除当前群组群名片                        |
 
-## 插件配置项
+## ⚙️插件配置项
 
 | 配置项                   | 描述              | 类型   |
 |-----------------------|-----------------|------|
@@ -60,7 +91,7 @@ plugin_dirs = ["src/plugins"]
 
 **由于qq群名片特殊性,间隔太短可能意义并不大反而容易导致风控,建议在30分钟以上**
 
-## 目前已实现的群名片功能
+## 🎉目前已实现的群名片功能
 <details>
 <summary>一图流</summary>
 <img src="https://cdn.staticaly.com/gh/forchannot/mypicgo@main/20230418/image.1l16rm6rtbkw.jpg" alt="help">
@@ -103,7 +134,7 @@ plugin_dirs = ["src/plugins"]
 </pre>
 </details>
 
-## PR需知
+## 🧐PR需知
 
 **PS:由于本人代码比较烂,很多方法实现都比较复杂,所以对pr不是很友好,如果有更好的方法欢迎pr并指正**
 
@@ -114,7 +145,7 @@ plugin_dirs = ["src/plugins"]
 * `/utils/card_name.py`内的`name_of_card`和`card_name_list`两个变量按照格式新增你的文件名和对应的描述
 
 
-## 常见问题
+## 🔍️常见问题
 
 Q:No module named xxx
 
@@ -126,7 +157,7 @@ A: 欢迎提issue(Pr)
 
 
 
-## 鸣谢
+## 🔥鸣谢
 
 [**自动化插件**的群名片修改js版](https://github.com/Nwflower/auto-plugin/tree/master/model/autoGroupName)
 
