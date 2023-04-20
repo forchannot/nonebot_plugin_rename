@@ -2,9 +2,10 @@
 
 import httpx
 from nonebot import logger
+from typing import Optional
 
 
-async def get_one_speak() -> str | None:
+async def get_one_speak() -> Optional[str]:
     async with httpx.AsyncClient(follow_redirects=True) as client:
         try:
             res = await client.get("https://v1.hitokoto.cn/")

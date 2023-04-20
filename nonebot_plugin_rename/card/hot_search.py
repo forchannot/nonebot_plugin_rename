@@ -4,6 +4,7 @@ import random
 import httpx
 
 from nonebot import logger
+from typing import Optional
 
 URL = {
     "1": "https://tenapi.cn/v2/bilihot/",  # B站
@@ -15,7 +16,7 @@ URL = {
 }
 
 
-async def hot(num: int) -> str | None:
+async def hot(num: int) -> Optional[str]:
     async with httpx.AsyncClient(follow_redirects=True) as client:
         try:
             res = await client.get(URL[str(num)])
