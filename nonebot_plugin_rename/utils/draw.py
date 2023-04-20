@@ -1,8 +1,8 @@
-import base64
 from io import BytesIO
 
 from PIL import Image, ImageDraw, ImageFont
-from .card_name import card_name_list as card_list
+
+from .card_name import card_list
 
 
 def generate_card_image(
@@ -23,12 +23,11 @@ def generate_card_image(
     draw.text((220, 10), title_right, font=font, fill="black")
     draw.line((0, 50, 800, 50), fill="black")
     # 遍历列表，获取内容并绘制到图片上
-    for i, content in enumerate(card_list):
-        if content[0] and content[1]:
-            draw.text((95, i * 50 + 65), content[0], font=font, fill="black")
+    for i in range(len(card_list)):
+        if card_list[str(i + 1)][0]:
+            draw.text((95, i * 50 + 65), str(i+1), font=font, fill="black")
             draw.line((200, i * 50 + 50, 200, (i + 1) * 50 + 50), fill="black")
-            draw.text((220, i * 50 + 65), content[1], font=font, fill="black")
-            # 绘制分割线
+            draw.text((220, i * 50 + 65), card_list[str(i + 1)][0], font=font, fill="black")
             draw.line((0, (i + 1) * 50 + 50, 800, (i + 1) * 50 + 50), fill="black")
     # 返回base64编码后的图片字符串
     img_buffer = BytesIO()

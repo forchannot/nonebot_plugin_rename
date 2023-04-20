@@ -141,7 +141,9 @@ plugin_dirs = ["src/plugins"]
 
 当新增一个新的群名片样式时,需要在**以下几个地方**进行修改相应代码使得其生效
 
-* `/utils/card_name.py`内的`name_of_card`和`card_name_list`两个变量按照格式新增你的文件名和对应的描述
+* 在`/card/__init__.py`内导入你的包
+* 在`/utils/card_name.py`内的`card_list`按照格式新增你的文件名和对应的描述以及导包
+
 
 ## 🔥鸣谢
 

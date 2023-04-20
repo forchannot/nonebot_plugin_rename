@@ -16,7 +16,7 @@ from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
 from .config import Config
-from .utils import *
+from .utils import choice_card, generate_card_image, card_list, read_yaml, write_yaml
 
 require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler
@@ -29,42 +29,42 @@ if driver.config.nickname:
 else:
     NICKNAME = env_config.self_name if env_config.self_name else "bot"
 yml_file = Path.cwd() / "data" / "group_card"
-
+permissions = SUPERUSER | GROUP_ADMIN | GROUP_OWNER
 
 group_card = on_command(
     "设置群名片",
     aliases={"更改群名片", "修改群名片"},
-    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    permission=permissions,
     priority=13,
-    block=False,
+    block=True,
 )
 view_pic = on_command(
     "查看群名片列表",
     aliases={"查看所有群名片", "群名片列表"},
-    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    permission=permissions,
     priority=14,
-    block=False,
+    block=True,
 )
 view_card = on_command(
     "查看当前群名片",
     aliases={"当前群名片"},
-    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    permission=permissions,
     priority=14,
-    block=False,
+    block=True,
 )
 set_card_now = on_command(
     "立即更改群名片",
     aliases={"立即设置群名片", "立即修改群名片"},
-    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    permission=permissions,
     priority=10,
-    block=False,
+    block=True,
 )
 del_group_card = on_command(
     "删除群名片",
     aliases={"删除本群群名片"},
-    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    permission=permissions,
     priority=10,
-    block=False,
+    block=True,
 )
 
 
@@ -81,7 +81,7 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
     # 读取群名片数据
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
     group_nicknames_valid = not any(
-        int(gn) > len(name_of_card) for gn in group_nicknames
+        int(gn) > len(card_list) for gn in group_nicknames
     )  # 判断用户输入的群名片序号是否有效
     # 更新群名片数据
     if group_nicknames_valid:

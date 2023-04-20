@@ -2,7 +2,7 @@ from nonebot.plugin import PluginMetadata
 
 from .main import *  # noqa
 
-__version__ = "0.1"
+__version__ = "1.0.2"
 __plugin_meta__ = PluginMetadata(
     name="nonebot_plugin_rename",
     description="用于更改qq机器人的群名片，内置多种有趣名片",

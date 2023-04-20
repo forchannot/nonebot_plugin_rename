@@ -12,12 +12,12 @@ def old_time() -> str:
     return f"现在是长安{BigHourName[(hour + 1) // 2]}{BigHourType[hour % 2]}"
 
 
-def now_time():
+def now_time() -> str:
     now = datetime.datetime.now()
     hour = now.hour
-    minutes = now.minute
+    # minutes = now.minute
     if hour < 10:
         hour = f"0{hour}"
-    if minutes < 10:
-        minutes = f"0{minutes}"
+    # if minutes < 10:
+    #     minutes = f"0{minutes}"
     return f"现在是北京时间{hour}点"
