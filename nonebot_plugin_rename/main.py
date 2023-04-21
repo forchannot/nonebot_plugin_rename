@@ -16,7 +16,14 @@ from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
 from .config import Config
-from .utils import choice_card, generate_card_image, card_list, read_yaml, write_yaml
+from .utils import (
+    choice_card,
+    generate_card_image,
+    card_list,
+    read_yaml,
+    write_yaml,
+    download_file,
+)
 
 require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler
@@ -25,7 +32,11 @@ driver: Driver = get_driver()
 env_config = Config.parse_obj(get_driver().config.dict())
 hour, minute = env_config.set_group_card_hour, env_config.set_group_card_minute
 if driver.config.nickname:
-    NICKNAME = env_config.self_name if env_config.self_name else list(driver.config.nickname)[0]
+    NICKNAME = (
+        env_config.self_name
+        if env_config.self_name
+        else list(driver.config.nickname)[0]
+    )
 else:
     NICKNAME = env_config.self_name if env_config.self_name else "bot"
 yml_file = Path.cwd() / "data" / "group_card"
@@ -188,9 +199,13 @@ async def _():
 # bot启动时执行
 @driver.on_startup
 async def init_group_card():
-    if not yml_file.exists():
-        yml_file.mkdir(parents=True)
-        logger.info("创建group_card文件夹成功")
     if not (yml_file / "group_card.yaml").exists():
+        yml_file.mkdir(parents=True, exist_ok=True)
         (yml_file / "group_card.yaml").touch()
         logger.info("创建group_card.yaml文件成功")
+    if not (yml_file / "fonts" / "draw.ttf").exists():
+        (yml_file / "fonts").mkdir(parents=True, exist_ok=True)
+        await download_file(
+            url="https://fastly.jsdelivr.net/gh/forchannot/nonebot_plugin_rename@main/data/fonts/draw.ttf",
+            file_path=yml_file / "fonts" / "draw.ttf",
+        )
