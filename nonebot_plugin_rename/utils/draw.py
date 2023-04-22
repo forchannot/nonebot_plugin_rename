@@ -1,10 +1,9 @@
 from io import BytesIO
-
-from PIL import Image, ImageDraw, ImageFont
 from pathlib import Path
 
-from .card_name import card_list
+from PIL import Image, ImageDraw, ImageFont
 
+from .card_name import card_list
 
 font_path = Path.cwd() / "data" / "group_card" / "fonts" / "draw.ttf"
 

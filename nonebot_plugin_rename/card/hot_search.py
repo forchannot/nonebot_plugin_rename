@@ -1,10 +1,10 @@
 # Description: 获取热搜
 
 import random
-import httpx
-
-from nonebot import logger
 from typing import Optional
+
+import httpx
+from nonebot import logger
 
 URL = {
     "1": "https://tenapi.cn/v2/bilihot/",  # B站

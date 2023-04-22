@@ -1,5 +1,5 @@
 # Description: 插件的配置文件
-from pydantic import Extra, BaseModel
+from pydantic import BaseModel, Extra
 
 
 class Config(BaseModel, extra=Extra.ignore):

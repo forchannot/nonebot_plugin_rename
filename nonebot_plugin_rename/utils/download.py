@@ -1,6 +1,7 @@
+from pathlib import Path
+
 import aiohttp
 from nonebot import logger
-from pathlib import Path
 
 
 async def download_file(url: str, file_path: Path) -> None:

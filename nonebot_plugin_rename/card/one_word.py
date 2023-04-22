@@ -1,8 +1,9 @@
 # Description: 获取一言
 
+from typing import Optional
+
 import httpx
 from nonebot import logger
-from typing import Optional
 
 
 async def get_one_speak() -> Optional[str]:
