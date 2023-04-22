@@ -1,6 +1,8 @@
 import asyncio
 import random
 from pathlib import Path
+from typing import List
+
 from nonebot import get_driver, on_command, require, logger, get_bots
 from nonebot.adapters.onebot.v11 import (
     Bot,
@@ -9,7 +11,7 @@ from nonebot.adapters.onebot.v11 import (
     GROUP_ADMIN,
     GROUP_OWNER,
     MessageSegment,
-    ActionFailed,
+    ActionFailed, PrivateMessageEvent,
 )
 from nonebot.drivers import Driver
 from nonebot.params import CommandArg
@@ -77,6 +79,13 @@ del_group_card = on_command(
     priority=10,
     block=True,
 )
+set_all_group_card = on_command(
+    "更改所有群名片",
+    aliases={"设置所有群名片", "修改所有群名片"},
+    permission=SUPERUSER,
+    priority=10,
+    block=True,
+)
 
 
 # on_command "设置群名片"
@@ -106,34 +115,26 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
 
 
 # 定时任务执行函数
-async def set_group_card():
+async def set_group_card(is_handle: bool = False):
+    tasks = []
+    set_wrong = []
     bots = get_bots()
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
     if not group_data:
         return
-    tasks = []
     for bot_id, bot_case in bots.items():
         group_info = group_data.get(bot_id, {})
         if not group_info:
             continue
-        for group_id, group_nicks in group_info.items():
-            card_names = await choice_card(random.choice(group_nicks))
-            if env_config.use_nickname_front:
-                card_names = f"{NICKNAME}|{card_names}"
-            if card_names:
-                tasks.append(
-                    bot_case.set_group_card(
-                        group_id=group_id,
-                        user_id=int(bot_id),
-                        card=card_names,
-                    )
-                )
-                logger.info(f"即将为群{group_id}的bot设置群名片后缀{card_names}")
+        tasks.extend(await set_card(group_info, bot_id, bot_case))
     results = await asyncio.gather(*tasks, return_exceptions=True)
     for group_info, result in zip(group_data.values(), results):
         group_id = next(iter(group_info))
         if isinstance(result, Exception):
             logger.warning(f"群{group_id}名片更改失败，错误信息：{result}")
+            set_wrong.append(group_id)
+    if is_handle:
+        return set_wrong
 
 
 # on_command "查看群名片列表"
@@ -187,6 +188,47 @@ async def _(bot: Bot, event: GroupMessageEvent):
         await del_group_card.finish("删除成功")
     else:
         await del_group_card.finish("本群还没设置过群名片哦")
+
+
+# on_command "设置所有群名片"
+@set_all_group_card.handle()
+async def _(bot: Bot, event: PrivateMessageEvent):
+    if env_config.is_one_bot_set_all_group_card:
+        result = await set_group_card(is_handle=True)
+        msg = f"群名片设置成功,设置失败的群有\n{' '.join(result)}" if result else "所有群名片设置成功"
+        await set_all_group_card.finish(msg)
+    set_wrong = []
+    group_data = read_yaml(yml_file / "group_card.yaml") or {}
+    group_info = group_data.get(bot.self_id, {})
+    if not group_info:
+        await set_all_group_card.finish("没有设置过任何群名片哦")
+    tasks = await set_card(group_info, bot.self_id, bot)
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    for group_info, result in zip(group_data.values(), results):
+        group_id = next(iter(group_info))
+        if isinstance(result, Exception):
+            logger.warning(f"群{group_id}名片更改失败，错误信息：{result}")
+            set_wrong.append(group_id)
+    msg = f"群名片设置成功,设置失败的群有\n{' '.join(set_wrong)}" if set_wrong else "所有群名片设置成功"
+    await set_all_group_card.finish(msg)
+
+
+async def set_card(group_info: dict, bot_id: str, bot_case) -> List:
+    tasks = []
+    for group_id, group_nicks in group_info.items():
+        card_names = await choice_card(random.choice(group_nicks))
+        if env_config.use_nickname_front:
+            card_names = f"{NICKNAME}|{card_names}"
+        if card_names:
+            tasks.append(
+                bot_case.set_group_card(
+                    group_id=group_id,
+                    user_id=int(bot_id),
+                    card=card_names,
+                )
+            )
+            logger.info(f"即将为群{group_id}的bot设置群名片后缀{card_names}")
+    return tasks
 
 
 # 定时任务入口

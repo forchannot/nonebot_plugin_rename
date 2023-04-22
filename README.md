@@ -76,15 +76,17 @@ plugin_dirs = ["src/plugins"]
 | 查看当前群名片    | 查看当前群名片的设置                       |
 | 立即更改群名片 序号 | 立即更改当前群组bot名片，后面仅可跟一个序号（bot无返回值） |
 | 删除群名片      | 删除当前群组群名片                        |
+| 设置所有群名片    | 为当前机器人所在所有群设置群名片，仅限超管私聊          |
 
 ## ⚙️插件配置项
 
-| 配置项                   | 描述              | 类型   |
-|-----------------------|-----------------|------|
-| set_group_card_hour   | 间隔时间(小时)        | int  |
-| set_group_card_minute | 间隔时间(分钟)        | int  |
-| use_nickname_front    | 是否在群名片前加上bot名称  | bool |
-| self_name             | 自定义前缀(需开启上一个配置) | str  |
+| 配置项                           | 描述                  | 类型   |
+|-------------------------------|---------------------|------|
+| set_group_card_hour           | 间隔时间(小时)            | int  |
+| set_group_card_minute         | 间隔时间(分钟)            | int  |
+| use_nickname_front            | 是否在群名片前加上bot名称      | bool |
+| self_name                     | 自定义前缀(需开启上一个配置)     | str  |
+| is_one_bot_set_all_group_card | 是否允许与bot会话可以设置所有群名片 | bool |
 
 **请注意不要将两个间隔时间都设为0!!!!!!**
 
