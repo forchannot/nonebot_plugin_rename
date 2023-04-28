@@ -8,3 +8,4 @@ class Config(BaseModel, extra=Extra.ignore):
     use_nickname_front: bool = True
     self_name: str = None
     is_one_bot_set_all_group_card: bool = False
+    is_show_aps_info_log: bool = True

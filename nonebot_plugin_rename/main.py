@@ -228,14 +228,16 @@ async def set_card(group_info: dict, bot_id: str, bot_case) -> List:
                     card=card_names,
                 )
             )
-            logger.info(f"即将为群{group_id}的bot设置群名片后缀{card_names}")
+            if env_config.is_show_aps_info_log:
+                logger.info(f"即将为群{group_id}的bot设置群名片后缀{card_names}")
     return tasks
 
 
 # 定时任务入口
 @scheduler.scheduled_job("interval", hours=hour, minutes=minute, id="rename_group_card")
 async def _():
-    logger.info("开始为列表中的群更改bot群名片")
+    if env_config.is_show_aps_info_log:
+        logger.info("开始为列表中的群更改bot群名片")
     await set_group_card()
 
 

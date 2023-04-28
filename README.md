@@ -87,6 +87,7 @@ plugin_dirs = ["src/plugins"]
 | use_nickname_front            | 是否在群名片前加上bot名称              | bool |
 | self_name                     | 自定义前缀(需开启上一个配置)             | str  |
 | is_one_bot_set_all_group_card | 是否允许与单个bot会话可以设置所有bot所在的群名片 | bool |
+ | is_show_aps_info_log          | 是否显示定时任务的info级别日志           | bool |
 
 **请注意不要将两个间隔时间都设为0!!!!!!**
 
