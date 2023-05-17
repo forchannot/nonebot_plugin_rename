@@ -8,6 +8,7 @@ from ..card import (
     now_time,
     old_time,
     system_status,
+    starrail_version_time
 )
 
 card_list = {
@@ -24,4 +25,5 @@ card_list = {
     "11": ("距离高考剩余时间", gk),
     "12": ("bot系统运行状态", system_status),
     "13": ("bot收发消息统计", get_msg),
+    "14": ("崩铁版本剩余时间", starrail_version_time),
 }
