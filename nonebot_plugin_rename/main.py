@@ -29,7 +29,7 @@ from .utils import (
 )
 
 require("nonebot_plugin_apscheduler")
-from nonebot_plugin_apscheduler import scheduler
+from nonebot_plugin_apscheduler import scheduler # noqa
 
 driver: Driver = get_driver()
 env_config = Config.parse_obj(get_driver().config.dict())
