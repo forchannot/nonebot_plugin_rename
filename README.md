@@ -96,7 +96,7 @@ plugin_dirs = ["src/plugins"]
 ## 🎉目前已实现的群名片功能
 <details>
 <summary>一图流</summary>
-<img src="https://cdn.staticaly.com/gh/forchannot/mypicgo@main/20230418/image.1l16rm6rtbkw.jpg" alt="help">
+<img src="https://cdn.staticaly.com/gh/forchannot/mypicgo@main/20230517/2b2b6734352a6ef94ff64cf1b7d8922d.5rr8s2fnai80.webp" alt="help">
 </details>
 
 <details>
@@ -104,6 +104,7 @@ plugin_dirs = ["src/plugins"]
 <pre>
 -- 高考时间
 -- 原神版本剩余时间
+-- 星铁版本剩余时间
 -- 北京时间
 -- 古代计时制时间
 </pre>
