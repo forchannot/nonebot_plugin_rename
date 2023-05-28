@@ -22,7 +22,6 @@ from .config import Config
 from .utils import (
     card_list,
     choice_card,
-    download_file,
     generate_card_image,
     read_yaml,
     write_yaml,
@@ -248,9 +247,3 @@ async def init_group_card():
         yml_file.mkdir(parents=True, exist_ok=True)
         (yml_file / "group_card.yaml").touch()
         logger.info("创建group_card.yaml文件成功")
-    if not (yml_file / "fonts" / "draw.ttf").exists():
-        (yml_file / "fonts").mkdir(parents=True, exist_ok=True)
-        await download_file(
-            url="https://fastly.jsdelivr.net/gh/forchannot/nonebot_plugin_rename@main/data/fonts/draw.ttf",
-            file_path=yml_file / "fonts" / "draw.ttf",
-        )
