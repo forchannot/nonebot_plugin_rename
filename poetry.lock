@@ -1,4 +1,17 @@
 [[package]]
+name = "aiofiles"
+version = "23.1.0"
+description = "File support for asyncio."
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.source]
+type = "legacy"
+url = "https://mirrors.aliyun.com/pypi/simple"
+reference = "ali"
+
+[[package]]
 name = "aiohttp"
 version = "3.8.4"
 description = "Async http client/server framework (asyncio)"
@@ -579,6 +592,28 @@ url = "https://mirrors.aliyun.com/pypi/simple"
 reference = "ali"
 
 [[package]]
+name = "tqdm"
+version = "4.65.0"
+description = "Fast, Extensible Progress Meter"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+colorama = {version = "*", markers = "platform_system == \"Windows\""}
+
+[package.extras]
+dev = ["py-make (>=0.1.0)", "twine", "wheel"]
+notebook = ["ipywidgets (>=6)"]
+slack = ["slack-sdk"]
+telegram = ["requests"]
+
+[package.source]
+type = "legacy"
+url = "https://mirrors.aliyun.com/pypi/simple"
+reference = "ali"
+
+[[package]]
 name = "typing-extensions"
 version = "4.5.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -661,9 +696,13 @@ reference = "ali"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b8b37a879dafbab6ba53d88fb16198a8cd5a98eef91bcc8b6fd9e04b37fcb2ef"
+content-hash = "ace9500dce29ef9444956c17ce0e9fd02d19f795997a0e76d2857071b673c930"
 
 [metadata.files]
+aiofiles = [
+    {file = "aiofiles-23.1.0-py3-none-any.whl", hash = "sha256:9312414ae06472eb6f1d163f555e466a23aed1c8f60c30cccf7121dba2e53eb2"},
+    {file = "aiofiles-23.1.0.tar.gz", hash = "sha256:edd247df9a19e0db16534d4baaf536d6609a43e1de5401d7a4c1c148753a1635"},
+]
 aiohttp = [
     {file = "aiohttp-3.8.4-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:5ce45967538fb747370308d3145aa68a074bdecb4f3a300869590f725ced69c1"},
     {file = "aiohttp-3.8.4-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:b744c33b6f14ca26b7544e8d8aadff6b765a80ad6164fb1a430bbadd593dfb1a"},
@@ -1324,6 +1363,10 @@ sniffio = [
 tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
+]
+tqdm = [
+    {file = "tqdm-4.65.0-py3-none-any.whl", hash = "sha256:c4f53a17fe37e132815abceec022631be8ffe1b9381c2e6e30aa70edc99e9671"},
+    {file = "tqdm-4.65.0.tar.gz", hash = "sha256:1871fb68a86b8fb3b59ca4cdd3dcccbc7e6d613eeed31f4c332531977b89beb5"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.5.0-py3-none-any.whl", hash = "sha256:fb33085c39dd998ac16d1431ebc293a8b3eedd00fd4a32de0ff79002c19511b4"},
