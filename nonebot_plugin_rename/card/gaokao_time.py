@@ -1,27 +1,20 @@
-# Description: 获取高考倒计时
-
-from datetime import datetime
+import datetime
 
 
 def gk() -> str:
-    # 基准时间
-    year = 2023
-    baseTime = (
-        datetime.strptime("2023-6-7 9:00:00", "%Y-%m-%d %H:%M:%S").timestamp() * 1000
-    )
-    nowTime = datetime.now().timestamp() * 1000
-    # 获取持续时间
-    duringTime = baseTime - nowTime
-    while duringTime <= 0:
-        # 时间+365天 年份+1年
-        duringTime += 365 * 24 * 60 * 60 * 1000
-        year += 1
-    # 获取天数并取整
-    days = int(duringTime / (24 * 3600 * 1000))
-    leave1 = duringTime % (24 * 3600 * 1000)
-    # 获取小时数并取整
-    hours = int(leave1 / (3600 * 1000))
-    leave2 = leave1 % (3600 * 1000)
-    # 获取分钟数并取整
-    minutes = int(leave2 / (60 * 1000))
-    return f"离{year}年高考还有{days}天{hours}小时{minutes}分钟"
+    now = datetime.datetime.now()
+    current_year = now.year
+
+    # 设置目标年份的高考日期，每年的6月7日9点到6月8日17点
+    gk_start = datetime.datetime(current_year, 6, 7, 9)
+    gk_end = datetime.datetime(current_year, 6, 8, 17)
+
+    if gk_start <= now <= gk_end:
+        return f"{current_year}年高考正在进行中"
+    else:
+        # 计算剩余时间
+        remaining_time = gk_start - now
+        days = remaining_time.days
+        hours, remainder = divmod(remaining_time.seconds, 3600)
+        minutes, _ = divmod(remainder, 60)
+        return f"距离{current_year}年高考还有{days}天{hours}小时{minutes}分钟"
