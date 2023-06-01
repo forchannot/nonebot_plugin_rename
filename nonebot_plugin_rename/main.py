@@ -28,19 +28,15 @@ from .utils import (
 )
 
 require("nonebot_plugin_apscheduler")
-from nonebot_plugin_apscheduler import scheduler # noqa
+from nonebot_plugin_apscheduler import scheduler  # noqa
 
 driver: Driver = get_driver()
 env_config = Config.parse_obj(get_driver().config.dict())
 hour, minute = env_config.set_group_card_hour, env_config.set_group_card_minute
 if driver.config.nickname:
-    NICKNAME = (
-        env_config.self_name
-        if env_config.self_name
-        else list(driver.config.nickname)[0]
-    )
+    NICKNAME = env_config.self_name or list(driver.config.nickname)[0]
 else:
-    NICKNAME = env_config.self_name if env_config.self_name else "bot"
+    NICKNAME = env_config.self_name or "bot"
 yml_file = Path.cwd() / "data" / "group_card"
 permissions = SUPERUSER | GROUP_ADMIN | GROUP_OWNER
 
@@ -100,18 +96,17 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
     bot_id = bot.self_id
     # 读取群名片数据
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
-    group_nicknames_valid = not any(
+    group_nicknames_valid = any(
         int(gn) > len(card_list) for gn in group_nicknames
     )  # 判断用户输入的群名片序号是否有效
     # 更新群名片数据
     if group_nicknames_valid:
-        group_data.setdefault(bot_id, {})
-        group_data[bot_id].setdefault(group_id, {})
-        group_data[bot_id][group_id] = group_nicknames
-        write_yaml(yml_file / "group_card.yaml", group_data)
-        await group_card.finish(f"已为你更改该群群名片序号为{nicks}")
-    else:
         await group_card.finish("没有这种群名片哦")
+    group_data.setdefault(bot_id, {})
+    group_data[bot_id].setdefault(group_id, {})
+    group_data[bot_id][group_id] = group_nicknames
+    write_yaml(yml_file / "group_card.yaml", group_data)
+    await group_card.finish(f"已为你更改该群群名片序号为{nicks}")
 
 
 # 定时任务执行函数
@@ -123,10 +118,8 @@ async def set_group_card(is_handle: bool = False):
     if not group_data:
         return
     for bot_id, bot_case in bots.items():
-        group_info = group_data.get(bot_id, {})
-        if not group_info:
-            continue
-        tasks.extend(await set_card(group_info, bot_id, bot_case))
+        if group_info := group_data.get(bot_id, {}):
+            tasks.extend(await set_card(group_info, bot_id, bot_case))
     results = await asyncio.gather(*tasks, return_exceptions=True)
     for group_info, result in zip(group_data.values(), results):
         group_id = next(iter(group_info))
@@ -164,7 +157,7 @@ async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
     card_number = arg.extract_plain_text().strip()
     if not card_number:
         await set_card_now.finish("请输入序号或序号输入错误")
-    elif card_number not in map(str, range(1, len(card_list)+1)):
+    elif card_number not in map(str, range(1, len(card_list) + 1)):
         await set_card_now.finish("没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧")
     card_names = await choice_card(card_number)
     if env_config.use_nickname_front:

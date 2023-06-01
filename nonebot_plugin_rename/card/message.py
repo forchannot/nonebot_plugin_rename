@@ -10,3 +10,4 @@ async def get_msg() -> str:
         msg_received = bot_status.get('message_received', '未知')
         msg_sent = bot_status.get('message_sent', '未知')
         return f"已发送{msg_sent}条|已接收{msg_received}条"
+    return "获取bot收发消息失败"
