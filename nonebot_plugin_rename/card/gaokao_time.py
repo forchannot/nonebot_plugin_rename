@@ -1,7 +1,7 @@
 import datetime
 
 
-def gk():
+def gk() -> str:
     now = datetime.datetime.now()
     current_year = now.year
 
@@ -17,10 +17,9 @@ def gk():
 
     if gk_start <= now <= gk_end:
         return f"{current_year}年高考正在进行中"
-    else:
-        # 计算剩余时间
-        remaining_time = gk_start - now
-        days = remaining_time.days
-        hours, remainder = divmod(remaining_time.seconds, 3600)
-        minutes, _ = divmod(remainder, 60)
-        return f"距离{current_year}年高考还有{days}天{hours}小时{minutes}分钟"
+    # 计算剩余时间
+    remaining_time = gk_start - now
+    days = remaining_time.days
+    hours, remainder = divmod(remaining_time.seconds, 3600)
+    minutes, _ = divmod(remainder, 60)
+    return f"距离{current_year}年高考还有{days}天{hours}小时{minutes}分钟"
