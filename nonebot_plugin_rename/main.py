@@ -18,7 +18,7 @@ from nonebot.drivers import Driver
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
-from .config import Config
+from .config import env_config
 from .utils import (
     card_list,
     choice_card,
@@ -31,7 +31,6 @@ require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler  # noqa
 
 driver: Driver = get_driver()
-env_config = Config.parse_obj(get_driver().config.dict())
 hour, minute = env_config.set_group_card_hour, env_config.set_group_card_minute
 if driver.config.nickname:
     NICKNAME = env_config.self_name or list(driver.config.nickname)[0]

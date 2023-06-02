@@ -1,6 +1,7 @@
 from nonebot.plugin import PluginMetadata
 
 from .main import *  # noqa
+from .config import env_config
 
 __version__ = "1.3.7"
 __plugin_meta__ = PluginMetadata(
@@ -9,6 +10,7 @@ __plugin_meta__ = PluginMetadata(
     usage="查看本仓库readme",
     supported_adapters={"~onebot.v11"},
     type="application",
+    config=env_config,
     homepage="https://github.com/forchannot/nonebot_plugin_rename",
     extra={
         "author": "forchannot",
