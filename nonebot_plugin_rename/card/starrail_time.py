@@ -4,9 +4,9 @@ from datetime import datetime
 
 def starrail_version_time() -> str:
     # 基准版本
-    Version = 1.0
+    Version = 1.1
     baseTime = (
-        datetime.strptime("2023-4-26 10:00:00", "%Y-%m-%d %H:%M:%S").timestamp() * 1000
+        datetime.strptime("2023-6-7 11:00:00", "%Y-%m-%d %H:%M:%S").timestamp() * 1000
     )
     nowTime = datetime.now().timestamp() * 1000
     # 获取持续时间
@@ -24,3 +24,4 @@ def starrail_version_time() -> str:
     # 获取分钟数并取整
     minutes = int(leave2 / (60 * 1000))
     return f"离崩铁{Version:.1f}还有{days}天{hours}小时{minutes}分钟"
+
