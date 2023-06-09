@@ -6,3 +6,4 @@ from .hot_search import hot
 from .message import get_msg
 from .one_word import get_one_speak
 from .status import system_status
+from .year_time import next_year_time
