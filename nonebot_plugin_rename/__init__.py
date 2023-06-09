@@ -1,7 +1,7 @@
 from nonebot.plugin import PluginMetadata
 
-from .main import *  # noqa
 from .config import env_config
+from .main import *  # noqa
 
 __version__ = "1.3.8"
 __plugin_meta__ = PluginMetadata(
@@ -15,5 +15,5 @@ __plugin_meta__ = PluginMetadata(
     extra={
         "author": "forchannot",
         "version": __version__,
-    }
+    },
 )

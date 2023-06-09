@@ -22,3 +22,14 @@ nonebot2 = "^2.0.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+select = ["E", "F", "B"]
+ignore = ["E501"]
+unfixable = ["B"]
+
+
+[tool.isort]
+profile = 'black'
+

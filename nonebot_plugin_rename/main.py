@@ -19,13 +19,7 @@ from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
 from .config import env_config
-from .utils import (
-    card_list,
-    choice_card,
-    generate_card_image,
-    read_yaml,
-    write_yaml,
-)
+from .utils import card_list, choice_card, generate_card_image, read_yaml, write_yaml
 
 require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler  # noqa
@@ -120,7 +114,7 @@ async def set_group_card(is_handle: bool = False):
         if group_info := group_data.get(bot_id, {}):
             tasks.extend(await set_card(group_info, bot_id, bot_case))
     results = await asyncio.gather(*tasks, return_exceptions=True)
-    for group_info, result in zip(group_data.values(), results):
+    for group_info, result in zip(group_data.values(), results):  # noqa: B905
         group_id = next(iter(group_info))
         if isinstance(result, Exception):
             logger.warning(f"群{group_id}名片更改失败，错误信息：{result}")
@@ -152,7 +146,9 @@ async def _(bot: Bot, event: GroupMessageEvent):
 
 # on_command "立即更改群名片"
 @set_card_now.handle()
-async def _(bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()):
+async def _(
+    bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()
+):  # noqa: B008
     card_number = arg.extract_plain_text().strip()
     if not card_number:
         await set_card_now.finish("请输入序号或序号输入错误")
@@ -196,7 +192,7 @@ async def _(bot: Bot, event: PrivateMessageEvent):
         await set_all_group_card.finish("没有设置过任何群名片哦")
     tasks = await set_card(group_info, bot.self_id, bot)
     results = await asyncio.gather(*tasks, return_exceptions=True)
-    for group_info, result in zip(group_data.values(), results):
+    for group_info, result in zip(group_data.values(), results):  # noqa: B905
         group_id = next(iter(group_info))
         if isinstance(result, Exception):
             logger.warning(f"群{group_id}名片更改失败，错误信息：{result}")
