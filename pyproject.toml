@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-plugin-rename"
-version = "1.3.9"
+version = "1.5.0"
 description = "更改qq机器人的群名片，内置多种有趣名片"
 authors = ["forchannot <yy320206@gmail.com>"]
 license = "GPL-3.0"
