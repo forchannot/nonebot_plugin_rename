@@ -147,7 +147,7 @@ async def _(bot: Bot, event: GroupMessageEvent):
 # on_command "立即更改群名片"
 @set_card_now.handle()
 async def _(
-    bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()
+    bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()  # noqa: B008
 ):  # noqa: B008
     card_number = arg.extract_plain_text().strip()
     if not card_number:

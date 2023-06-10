@@ -28,6 +28,7 @@ build-backend = "poetry.core.masonry.api"
 select = ["E", "F", "B"]
 ignore = ["E501"]
 unfixable = ["B"]
+line-length = 88
 
 
 [tool.isort]
