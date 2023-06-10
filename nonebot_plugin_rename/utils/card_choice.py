@@ -12,5 +12,5 @@ async def choice_card(num) -> str:
     return (
         await card_name_choice(*arg)
         if iscoroutinefunction(card_name_choice)
-        else card_name_choice(*arg)  # type: ignore
+        else card_name_choice(*arg)
     )

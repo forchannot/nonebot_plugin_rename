@@ -1,19 +1,21 @@
 # Description: 群名片序号对应的函数
 from ..card import (
-    genshin_version_time,
+    genshin,
     get_msg,
     get_one_speak,
     gk,
     hot,
+    ky,
     next_year_time,
     now_time,
     old_time,
-    starrail_version_time,
+    starrail,
     system_status,
+    zk,
 )
 
 card_list = {
-    "1": ("原神版本剩余时间", genshin_version_time),
+    "1": ("每日一言", get_one_speak),
     "2": ("北京时间(小时)", now_time),
     "3": ("当前时间(古代计时制)", old_time),
     "4": ("B站热搜", hot),
@@ -22,10 +24,12 @@ card_list = {
     "7": ("百度热搜", hot),
     "8": ("知乎热搜", hot),
     "9": ("今日头条热搜", hot),
-    "10": ("每日一言", get_one_speak),
-    "11": ("距离高考剩余时间", gk),
+    "10": ("原神版本剩余时间", genshin),
+    "11": ("崩铁版本剩余时间", starrail),
     "12": ("bot系统运行状态", system_status),
     "13": ("bot收发消息统计", get_msg),
-    "14": ("崩铁版本剩余时间", starrail_version_time),
-    "15": ("距离下一年时间", next_year_time),
+    "14": ("距离下一年时间", next_year_time),
+    "15": ("距离高考剩余时间", gk),
+    "16": ("距离考研剩余时间", ky),
+    "17": ("距离中考剩余时间", zk),
 }
