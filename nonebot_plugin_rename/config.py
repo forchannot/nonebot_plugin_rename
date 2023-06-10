@@ -1,7 +1,8 @@
 # Description: 插件的配置文件
+from typing import Optional
+
 from nonebot import get_driver
 from pydantic import BaseModel, Extra
-from typing import Optional
 
 
 class Config(BaseModel, extra=Extra.ignore):

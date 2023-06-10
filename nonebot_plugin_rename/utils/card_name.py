@@ -5,11 +5,11 @@ from ..card import (
     get_one_speak,
     gk,
     hot,
+    next_year_time,
     now_time,
     old_time,
-    system_status,
     starrail_version_time,
-    next_year_time,
+    system_status,
 )
 
 card_list = {
