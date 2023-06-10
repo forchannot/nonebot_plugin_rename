@@ -7,7 +7,7 @@ def genshin_version_time() -> str:
     Versions = [36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
     Index = 0
     # 获取持续时间
-    baseTime = datetime.strptime('2023-4-12 11:00:00', '%Y-%m-%d %H:%M:%S')
+    baseTime = datetime.strptime("2023-4-12 11:00:00", "%Y-%m-%d %H:%M:%S")
     nowTime = datetime.now()
     duringTime = (baseTime - nowTime).total_seconds() * 1000
     # 推算版本
@@ -25,4 +25,4 @@ def genshin_version_time() -> str:
     # 获取分钟数并取整
     minutes = int(leave2 / (60 * 1000))
     # 字符串处理
-    return f'离原神{Version}还有{days}天{hours}小时{minutes}分钟'
+    return f"离原神{Version}还有{days}天{hours}小时{minutes}分钟"

@@ -24,4 +24,3 @@ def starrail_version_time() -> str:
     # 获取分钟数并取整
     minutes = int(leave2 / (60 * 1000))
     return f"离崩铁{Version:.1f}还有{days}天{hours}小时{minutes}分钟"
-

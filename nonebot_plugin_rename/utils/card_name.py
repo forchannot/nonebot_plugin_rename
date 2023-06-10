@@ -9,7 +9,7 @@ from ..card import (
     old_time,
     system_status,
     starrail_version_time,
-    next_year_time
+    next_year_time,
 )
 
 card_list = {
