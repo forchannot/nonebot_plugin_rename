@@ -21,15 +21,15 @@ _✨ 通过定时任务更改bot所在群自己的群名片,内置了几种常�
 </div>
 
 <!-- TOC -->
-- [nonebot-plugin-rename](#nonebot-plugin-rename)
-  - [📖简介](#简介)
-  - [🔐许可](#许可)
-  - [💿 安装方法](#-安装方法)
-  - [🏷️插件命令](#️插件命令)
-  - [⚙️插件配置项](#️插件配置项)
-  - [🎉目前已实现的群名片功能](#目前已实现的群名片功能)
-  - [🧐PR需知](#pr需知)
-  - [🔥鸣谢](#鸣谢)
+* [nonebot-plugin-rename](#nonebot-plugin-rename)
+  * [📖简介](#简介)
+  * [🔐许可](#许可)
+  * [💿 安装方法](#-安装方法)
+  * [🏷️插件命令](#插件命令)
+  * [⚙️插件配置项](#插件配置项)
+  * [🎉目前已实现的群名片功能](#目前已实现的群名片功能)
+  * [🧐PR需知](#pr需知)
+  * [🔥鸣谢](#鸣谢)
 <!-- TOC -->
 
 ## 📖简介
@@ -88,11 +88,13 @@ plugin_dirs = ["src/plugins"]
 | self_name                     | 自定义前缀(需开启上一个配置)             | str  |
 | is_one_bot_set_all_group_card | 是否允许与单个bot会话可以设置所有bot所在的群名片 | bool |
  | is_show_aps_info_log          | 是否显示定时任务的info级别日志           | bool |
- | zk_time | 设置当地中考时间 | tuple |
+ | zk_time_start                 | 设置当地中考时间                    | str  |
+    | zk_time_end                   | 设置当地中考时间                    | str  |
 
-**如果要使用中考剩余时间，由于每个地方中考时间并不统一，请务必填写`zk_time`配置项，否则获取的时间并不是你们当地的中考时间节点（开始和结束时间），参考配置如下**
+**如果要使用中考剩余时间，由于每个地方中考时间并不统一，请务必填写`zk_time`系列配置项，否则获取的时间并不是你们当地的中考时间节点（开始和结束时间），参考配置如下**
 ```dotenv
-zk_time=("06-12 09:00:00", "06-14 11:00:00")
+zk_time_start="06-12 09:00:00"
+zk_time_end="06-14 11:00:00"
 ```
 
 **请注意不要将`set_group_card_hour`和`set_group_card_minute`都设为0**
@@ -102,13 +104,14 @@ zk_time=("06-12 09:00:00", "06-14 11:00:00")
 ## 🎉目前已实现的群名片功能
 <details>
 <summary>一图流</summary>
-<img src="https://cdn.staticaly.com/gh/forchannot/mypicgo@main/20230517/2b2b6734352a6ef94ff64cf1b7d8922d.5rr8s2fnai80.webp" alt="help">
+<img src="https://cdn.staticaly.com/gh/forchannot/mypicgo@main/20230610/image.2cyi74rq30kk.png" alt="help">
 </details>
 
 <details>
 <summary>时间</summary>
 <pre>
 -- 高考时间
+-- 中考时间
 -- 原神版本剩余时间
 -- 星铁版本剩余时间
 -- 北京时间

@@ -35,6 +35,6 @@ class ExamTime:
         return f"距离{current_year}年{self.exam}还有{days}天{hours}小时{minutes}分钟"
 
 
-zk = ExamTime("中考", env_config.zk_time).get_exam_time
+zk = ExamTime("中考", (env_config.zk_time_start, env_config.zk_time_end)).get_exam_time
 gk = ExamTime("高考", ("06-07 09:00:00", "06-08 17:00:00")).get_exam_time
 ky = ExamTime("考研", ("12-23 08:30:00", "12-24 17:00:00")).get_exam_time  # 24考研
