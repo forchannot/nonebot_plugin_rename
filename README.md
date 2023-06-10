@@ -88,8 +88,8 @@ plugin_dirs = ["src/plugins"]
 | self_name                     | 自定义前缀(需开启上一个配置)             | str  |
 | is_one_bot_set_all_group_card | 是否允许与单个bot会话可以设置所有bot所在的群名片 | bool |
  | is_show_aps_info_log          | 是否显示定时任务的info级别日志           | bool |
- | zk_time_start                 | 设置当地中考时间                    | str  |
-    | zk_time_end                   | 设置当地中考时间                    | str  |
+ | zk_time_start                 | 中考开始时间                    | str  |
+ | zk_time_end                   | 中考结束时间                    | str  |
 
 **如果要使用中考剩余时间，由于每个地方中考时间并不统一，请务必填写`zk_time`系列配置项，否则获取的时间并不是你们当地的中考时间节点（开始和结束时间），参考配置如下**
 ```dotenv
