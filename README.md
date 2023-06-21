@@ -30,7 +30,7 @@ _✨ 通过定时任务更改bot所在群自己的群名片,内置了几种常�
   * [🎉目前已实现的群名片功能](#目前已实现的群名片功能)
   * [🧐PR需知](#pr需知)
   * [🔥鸣谢](#鸣谢)
-<!-- TOC -->
+  <!-- TOC -->
 
 ## 📖简介
 
@@ -80,16 +80,17 @@ plugin_dirs = ["src/plugins"]
 
 ## ⚙️插件配置项
 
-| 配置项                           | 描述                          | 类型   |
-|-------------------------------|-----------------------------|------|
-| set_group_card_hour           | 间隔时间(小时)                    | int  |
-| set_group_card_minute         | 间隔时间(分钟)                    | int  |
-| use_nickname_front            | 是否在群名片前加上bot名称              | bool |
-| self_name                     | 自定义前缀(需开启上一个配置)             | str  |
-| is_one_bot_set_all_group_card | 是否允许与单个bot会话可以设置所有bot所在的群名片 | bool |
- | is_show_aps_info_log          | 是否显示定时任务的info级别日志           | bool |
- | zk_time_start                 | 中考开始时间                    | str  |
- | zk_time_end                   | 中考结束时间                    | str  |
+| 配置项                           | 描述                          | 类型   | 默认值            |
+|-------------------------------|-----------------------------|------|----------------|
+| set_group_card_hour           | 间隔时间(小时)                    | int  | 0              |
+| set_group_card_minute         | 间隔时间(分钟)                    | int  | 30             |
+| use_nickname_front            | 是否在群名片前加上bot名称              | bool | True           |
+| self_name                     | 自定义前缀(需开启上一个配置)             | str  | None           |
+| is_one_bot_set_all_group_card | 是否允许与单个bot会话可以设置所有bot所在的群名片 | bool | False          |
+| is_show_aps_info_log          | 是否显示定时任务的info级别日志           | bool | True           |
+| is_show_hot_search_from       | 热搜是否显示来源                    | bool | False          |
+| zk_time_start                 | 中考开始时间                      | str  | 06-12 09:00:00 |
+| zk_time_end                   | 中考结束时间                      | str  | 06-14 11:00:00 |
 
 **如果要使用中考剩余时间，由于每个地方中考时间并不统一，请务必填写`zk_time`系列配置项，否则获取的时间并不是你们当地的中考时间节点（开始和结束时间），参考配置如下**
 ```dotenv
@@ -104,7 +105,7 @@ zk_time_end="06-14 11:00:00"
 ## 🎉目前已实现的群名片功能
 <details>
 <summary>一图流</summary>
-<img src="https://cdn.staticaly.com/gh/forchannot/mypicgo@main/20230610/image.2cyi74rq30kk.png" alt="help">
+<img src="https://jsd.cdn.zzko.cn/gh/forchannot/mypicgo@main/20230621/e467ea4da8e8bd2c1a30b40daf660c11.14n3cusfflr4.webp" alt="help">
 </details>
 
 <details>
@@ -124,7 +125,7 @@ zk_time_end="06-14 11:00:00"
 <pre>
 -- B站热搜
 -- 微博热搜
--- 抖音热搜
+-- 腾讯新闻热搜
 -- 百度热搜
 -- 知乎热搜
 -- 今日头条热搜
