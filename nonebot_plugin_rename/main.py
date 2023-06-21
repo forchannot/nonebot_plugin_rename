@@ -159,7 +159,7 @@ async def _(
         card_names = f"{NICKNAME}|{card_names}"
     try:
         await bot.set_group_card(
-            group_id=event.group_id, user_id=int(bot.self_id), card=card_names
+            group_id=event.group_id, user_id=int(bot.self_id), card=card_names[:20]
         )
         logger.info(f"群组{event.group_id}成功设置名片 >> {card_names}")
     except (AttributeError, ActionFailed):
@@ -212,7 +212,7 @@ async def set_card(group_info: dict, bot_id: str, bot_case) -> List:
                 bot_case.set_group_card(
                     group_id=group_id,
                     user_id=int(bot_id),
-                    card=card_names,
+                    card=card_names[:20],
                 )
             )
             if env_config.is_show_aps_info_log:
