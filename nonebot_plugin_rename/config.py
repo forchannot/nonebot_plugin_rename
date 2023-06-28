@@ -15,6 +15,7 @@ class Config(BaseModel, extra=Extra.ignore):
     is_show_aps_info_log: bool = True
     zk_time_start: str = "06-12 09:00:00"
     zk_time_end: str = "06-14 11:00:00"
+    hot_search_url: int = 1
 
 
 env_config = Config.parse_obj(get_driver().config.dict())
