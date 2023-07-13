@@ -25,9 +25,9 @@ class MhyGameVersion:
         days = int(during_time / (24 * 3600 * 1000))
         leave1 = during_time % (24 * 3600 * 1000)
         hours = int(leave1 / (3600 * 1000))
-        leave2 = leave1 % (3600 * 1000)
-        minutes = int(leave2 / (60 * 1000))
-        return f"离{self.name}{version}版本还有{days}天{hours}小时{minutes}分钟"
+        # leave2 = leave1 % (3600 * 1000)
+        # minutes = int(leave2 / (60 * 1000))
+        return f"离{self.name}{version}还有{days}天{hours}小时"
 
 
 starrail = MhyGameVersion(

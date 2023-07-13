@@ -22,7 +22,7 @@ from .config import env_config
 from .utils import card_list, choice_card, generate_card_image, read_yaml, write_yaml
 
 require("nonebot_plugin_apscheduler")
-from nonebot_plugin_apscheduler import scheduler  # noqa
+from nonebot_plugin_apscheduler import scheduler  # noqa: E402
 
 driver: Driver = get_driver()
 hour, minute = env_config.set_group_card_hour, env_config.set_group_card_minute
@@ -148,9 +148,9 @@ async def _(bot: Bot, event: GroupMessageEvent):
 @set_card_now.handle()
 async def _(
     bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()  # noqa: B008
-):  # noqa: B008
+):
     card_number = arg.extract_plain_text().strip()
-    if not card_number:
+    if not card_number or not card_number.isdigit():
         await set_card_now.finish("请输入序号或序号输入错误")
     elif card_number not in map(str, range(1, len(card_list) + 1)):
         await set_card_now.finish("没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧")
