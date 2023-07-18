@@ -5,7 +5,7 @@ import yaml
 
 # 读取Yaml文件方法
 def read_yaml(yaml_path) -> dict:
-    with open(yaml_path, encoding="utf-8", mode="r") as f:
+    with open(yaml_path, encoding="utf-8") as f:
         return yaml.load(stream=f, Loader=yaml.FullLoader)
 
 

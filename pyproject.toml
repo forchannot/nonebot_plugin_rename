@@ -25,10 +25,11 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.ruff]
-select = ["E", "F", "B"]
+select = ["E", "W", "F", "UP", "C", "T", "PYI", "PT", "Q", "B"]
 ignore = ["E501"]
 unfixable = ["B"]
 line-length = 88
+target-version = "py38"
 
 
 [tool.isort]
