@@ -99,7 +99,7 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
     group_data[bot_id].setdefault(group_id, {})
     group_data[bot_id][group_id] = group_nicknames
     write_yaml(yml_file / "group_card.yaml", group_data)
-    await group_card.finish(f"已为你更改该群群名片序号为{nicks}")
+    await group_card.finish(f"已为群{event.group_id}更改该群群名片序号为{nicks}")
 
 
 # 定时任务执行函数
@@ -173,7 +173,7 @@ async def _(bot: Bot, event: GroupMessageEvent):
     if bot.self_id in group_data and str(event.group_id) in group_data[bot.self_id]:
         group_data[bot.self_id].pop(str(event.group_id))
         write_yaml(yml_file / "group_card.yaml", group_data)
-        await del_group_card.finish("删除成功")
+        await del_group_card.finish("删除当前群群名片成功")
     else:
         await del_group_card.finish("本群还没设置过群名片哦")
 
@@ -216,7 +216,7 @@ async def set_card(group_info: dict, bot_id: str, bot_case) -> List:
                 )
             )
             if env_config.is_show_aps_info_log:
-                logger.info(f"即将为群{group_id}的bot设置群名片后缀{card_names}")
+                logger.info(f"即将为群{group_id}的bot{bot_id}设置群名片后缀{card_names}")
     return tasks
 
 
