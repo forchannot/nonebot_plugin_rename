@@ -3,7 +3,7 @@ ci:
   skip:
     - "poetry-lock"
   autofix_prs: true
-  autoupdate_branch: v4
+  autoupdate_branch: main
   autoupdate_schedule: monthly
   autoupdate_commit_msg: "⬆️ `pre-commit-ci`自动升级"
 repos:
