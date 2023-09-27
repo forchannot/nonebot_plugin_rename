@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from .card_name import card_list
 
-font_path = Path(__file__).parent.parent / "fonts" / "draw.ttf"
+font_path = Path(__file__).parent.parent.absolute() / "fonts" / "draw.ttf"
 
 
 def generate_card_image(
