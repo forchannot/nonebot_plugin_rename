@@ -36,6 +36,9 @@ async def hot(num: int) -> str:
         try:
             res = await client.get(f"{URLSTART}/{URL[str(num)][0]}")
             if res.status_code != 200:
+                logger.warning(
+                    f"获取{URL[str(num)][1]}热搜失败: {res.status_code}，请尝试更换API后重启"
+                )
                 return "热搜获取失败"
             data = res.json()["data"]
             result = (
@@ -44,9 +47,8 @@ async def hot(num: int) -> str:
                 else random.choice(data)["name"]
             )
             if env_config.is_show_hot_search_from:
-                logger.warning(f"获取热搜失败: {res.status_code}，请尝试更换API后重启")
                 result = f"{URL[str(num)][1]}：{result}"
             return result
         except Exception as e:
-            logger.warning(f"获取热搜失败: {e}，请尝试更换API后重启")
+            logger.warning(f"获取热搜{URL[str(num)][1]}失败: {e}，请尝试更换API后重启")
             return "热搜获取失败"
