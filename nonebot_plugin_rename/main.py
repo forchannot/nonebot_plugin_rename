@@ -127,7 +127,9 @@ async def set_group_card(is_handle: bool = False):
 @view_pic.handle()
 async def _(event: GroupMessageEvent):
     img = MessageSegment.image(generate_card_image())
-    await view_pic.finish(message=MessageSegment.text("可以使用<更改群名片 序号>进行设置") + img)
+    await view_pic.finish(
+        message=MessageSegment.text("可以使用<更改群名片 序号>进行设置") + img
+    )
 
 
 # on_command "查看当前群名片"
@@ -147,13 +149,17 @@ async def _(bot: Bot, event: GroupMessageEvent):
 # on_command "立即更改群名片"
 @set_card_now.handle()
 async def _(
-    bot: Bot, event: GroupMessageEvent, arg: Message = CommandArg()  # noqa: B008
+    bot: Bot,
+    event: GroupMessageEvent,
+    arg: Message = CommandArg(),  # noqa: B008
 ):
     card_number = arg.extract_plain_text().strip()
     if not card_number or not card_number.isdigit():
         await set_card_now.finish("请输入序号或序号输入错误")
     elif card_number not in map(str, range(1, len(card_list) + 1)):
-        await set_card_now.finish("没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧")
+        await set_card_now.finish(
+            "没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧"
+        )
     card_names = await choice_card(card_number)
     if env_config.use_nickname_front:
         card_names = f"{NICKNAME}|{card_names}"
@@ -183,7 +189,11 @@ async def _(bot: Bot, event: GroupMessageEvent):
 async def _(bot: Bot, event: PrivateMessageEvent):
     if env_config.is_one_bot_set_all_group_card:
         result = await set_group_card(is_handle=True)
-        msg = f"群名片设置成功,设置失败的群有\n{' '.join(result)}" if result else "所有群名片设置成功"
+        msg = (
+            f"群名片设置成功,设置失败的群有\n{' '.join(result)}"
+            if result
+            else "所有群名片设置成功"
+        )
         await set_all_group_card.finish(msg)
     set_wrong = []
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
@@ -197,7 +207,11 @@ async def _(bot: Bot, event: PrivateMessageEvent):
         if isinstance(result, Exception):
             logger.warning(f"群{group_id}名片更改失败，错误信息：{result}")
             set_wrong.append(group_id)
-    msg = f"群名片设置成功,设置失败的群有\n{' '.join(set_wrong)}" if set_wrong else "所有群名片设置成功"
+    msg = (
+        f"群名片设置成功,设置失败的群有\n{' '.join(set_wrong)}"
+        if set_wrong
+        else "所有群名片设置成功"
+    )
     await set_all_group_card.finish(msg)
 
 
@@ -216,7 +230,9 @@ async def set_card(group_info: dict, bot_id: str, bot_case) -> List:
                 )
             )
             if env_config.is_show_aps_info_log:
-                logger.info(f"即将为群{group_id}的bot{bot_id}设置群名片后缀{card_names}")
+                logger.info(
+                    f"即将为群{group_id}的bot{bot_id}设置群名片后缀{card_names}"
+                )
     return tasks
 
 

@@ -4,7 +4,21 @@ import datetime
 
 def old_time() -> str:
     now = datetime.datetime.now()
-    BigHourName = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥", "子"]
+    BigHourName = [
+        "子",
+        "丑",
+        "寅",
+        "卯",
+        "辰",
+        "巳",
+        "午",
+        "未",
+        "申",
+        "酉",
+        "戌",
+        "亥",
+        "子",
+    ]
     BigHourType = ["正", "初"]
     # BigMinName = ["零", "一", "二", "三", "四"]
     hour = now.hour
