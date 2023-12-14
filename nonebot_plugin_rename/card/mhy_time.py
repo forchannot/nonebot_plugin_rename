@@ -25,19 +25,17 @@ class MhyGameVersion:
         days = int(during_time / (24 * 3600 * 1000))
         leave1 = during_time % (24 * 3600 * 1000)
         hours = int(leave1 / (3600 * 1000))
-        # leave2 = leave1 % (3600 * 1000)
-        # minutes = int(leave2 / (60 * 1000))
         return f"离{self.name}{version}还有{days}天{hours}小时"
 
 
 starrail = MhyGameVersion(
-    "2023-6-7 11:00:00",
-    [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+    "2023-11-15 11:00:00",
+    [15, 16, 20, 21, 22, 23, 24, 25, 26],
     "崩铁",
 ).get_version_time
 
 genshin = MhyGameVersion(
-    "2023-4-12 11:00:00",
-    [36, 37, 38, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
+    "2023-8-16 11:00:00",
+    [40, 41, 42, 43, 44, 45, 46, 47, 48, 50],
     "原神",
 ).get_version_time

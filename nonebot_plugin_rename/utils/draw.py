@@ -9,7 +9,7 @@ font_path = Path(__file__).parent.parent.absolute() / "fonts" / "draw.ttf"
 
 
 def generate_card_image(
-    font: Path = font_path,
+    font=font_path,
     font_size: int = 20,
     title_left: str = "群名片序号",
     title_right: str = "群名片描述",
