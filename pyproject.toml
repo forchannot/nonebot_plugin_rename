@@ -25,8 +25,8 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.ruff]
-select = ["E", "W", "F", "UP", "C", "T", "PYI", "PT", "Q", "B"]
-ignore = ["E501", 'Q000', 'Q001', 'Q002', 'Q003', 'W191']
+select = ["E", "W", "F", "UP", "C", "T", "PYI", "PT", "Q", "B", "PL"]
+ignore = ["E501", 'Q000', 'Q001', 'Q002', 'Q003', 'W191', "PLR2004"]
 unfixable = ["B"]
 line-length = 88
 target-version = "py38"
