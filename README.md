@@ -91,12 +91,32 @@ plugin_dirs = ["src/plugins"]
 | zk_time_start                 | 中考开始时间                      | str  | 06-12 09:00:00 |
 | zk_time_end                   | 中考结束时间                      | str  | 06-14 11:00:00 |
 | hot_search_url                | 热搜获取API，1为作者提供，2为tenapi| int  | 1 |
+| rename_mhy_versions | 原神/星穹铁道特殊版本及其持续时间和版本列表, 配置方法见下文 | dict | 见代码 |
 
 **如果要使用中考剩余时间，由于每个地方中考时间并不统一，请务必填写`zk_time`系列配置项，否则获取的时间并不是你们当地的中考时间节点（开始和结束时间），参考配置如下**
 ```dotenv
 zk_time_start="06-12 09:00:00"
 zk_time_end="06-14 11:00:00"
 ```
+**原神/星穹铁道的`特殊版本及其持续时间`和`版本列表`配置方法`示例`，建议直接复制后修改，sr代表星穹铁道，gi代表原神，`"16": 35`代表1.6版本持续35天，以此类推**
+```dotenv
+rename_mhy_versions='
+{
+    "sr": {
+        "version_list": [16, 20, 21, 22, 23, 24, 25, 26],
+        "special_versions_dict": {
+            "16": 35,
+            "25": 25
+        }
+    },
+    "gi": {
+        "version_list": [43, 44, 45, 46, 47, 48, 50],
+        "special_versions_dict": {}
+    }
+}
+'
+```
+
 
 **请注意不要将`set_group_card_hour`和`set_group_card_minute`都设为0**
 

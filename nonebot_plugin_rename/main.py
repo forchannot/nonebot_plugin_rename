@@ -251,3 +251,4 @@ async def init_group_card():
         yml_file.mkdir(parents=True, exist_ok=True)
         (yml_file / "group_card.yaml").touch()
         logger.info("创建group_card.yaml文件成功")
+
