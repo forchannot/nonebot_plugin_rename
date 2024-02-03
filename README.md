@@ -99,6 +99,7 @@ zk_time_start="06-12 09:00:00"
 zk_time_end="06-14 11:00:00"
 ```
 **原神/星穹铁道的`特殊版本及其持续时间`和`版本列表`配置方法`示例`，建议直接复制后修改，sr代表星穹铁道，gi代表原神，`"16": 35`代表1.6版本持续35天，以此类推**
+**注意`base_time`需要和version_list的第一个版本开始时间（按照我给的格式写）保持一致，否则无法正确识别版本，且每个键都需要存在**
 ```dotenv
 rename_mhy_versions='
 {
@@ -107,11 +108,15 @@ rename_mhy_versions='
         "special_versions_dict": {
             "16": 35,
             "25": 25
-        }
+        },
+        "base_time": "2023-12-27 11:00:00",
+        "name": "崩铁"
     },
     "gi": {
         "version_list": [43, 44, 45, 46, 47, 48, 50],
-        "special_versions_dict": {}
+        "special_versions_dict": {},
+        "base_time": "2024-1-31 11:00:00",
+        "name": "原神"
     }
 }
 '

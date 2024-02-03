@@ -30,9 +30,7 @@ def generate_card_image(
         if card_list[str(i + 1)][0]:
             draw.text((95, i * 50 + 65), str(i + 1), font=font, fill="black")
             draw.line((200, i * 50 + 50, 200, (i + 1) * 50 + 50), fill="black")
-            draw.text(
-                (220, i * 50 + 65), card_list[str(i + 1)][0], font=font, fill="black"
-            )
+            draw.text((220, i * 50 + 65), card_list[str(i + 1)][0], font=font, fill="black")
             draw.line((0, (i + 1) * 50 + 50, 800, (i + 1) * 50 + 50), fill="black")
     # 返回base64编码后的图片字符串
     img_buffer = BytesIO()

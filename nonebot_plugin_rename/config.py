@@ -8,6 +8,8 @@ from pydantic import BaseModel, Extra
 class MhyVersion(BaseModel):
     version_list: List[int]
     special_versions_dict: Dict[int, int]
+    base_time: str
+    name: str
 
 
 class Config(BaseModel, extra=Extra.ignore):
@@ -23,11 +25,16 @@ class Config(BaseModel, extra=Extra.ignore):
     hot_search_url: int = 1
     rename_mhy_versions: Dict[str, MhyVersion] = {
         "gi": MhyVersion(
-            version_list=[43, 44, 45, 46, 47, 48, 50], special_versions_dict={}
+            version_list=[44, 45, 46, 47, 48, 50],
+            special_versions_dict={},
+            base_time="2024-1-31 11:00:00",
+            name="原神",
         ),
         "sr": MhyVersion(
             version_list=[16, 20, 21, 22, 23, 24, 25, 26],
             special_versions_dict={16: 41, 20: 49},
+            base_time="2023-12-27 11:00:00",
+            name="崩铁",
         ),
     }
 
