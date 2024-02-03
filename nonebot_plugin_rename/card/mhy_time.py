@@ -15,9 +15,10 @@ class MhyGameVersion:
         special_versions_dict: Dict[int, int],
     ):
         """
-        :param base_time_str: 基准时间，str "2021-07-21 00:00:00"
+        :param base_time: 基准时间，str "2021-07-21 00:00:00"
         :param version_list: 游戏版本列表，list [1.1, 1.2, 1.3, 1.4...]
         :param name: 游戏名称，str "name"
+        :param special_versions_dict: 特殊版本时间，dict {11: 11, 12: 22}
         """
         self.base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
         self.version_list = version_list
