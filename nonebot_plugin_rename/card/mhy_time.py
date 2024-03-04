@@ -31,8 +31,14 @@ class MhyGameVersion:
         index = 0
         time_conversion_factor = 24 * 60 * 60 * 1000
         while during_time <= 0:
-            if self.special_versions_dict and self.version_list[index] in self.special_versions_dict:
-                during_time += self.special_versions_dict[self.version_list[index]] * time_conversion_factor
+            if (
+                self.special_versions_dict
+                and self.version_list[index] in self.special_versions_dict
+            ):
+                during_time += (
+                    self.special_versions_dict[self.version_list[index]]
+                    * time_conversion_factor
+                )
             else:
                 during_time += 42 * time_conversion_factor
             index += 1
@@ -43,7 +49,9 @@ class MhyGameVersion:
         return f"离{self.name}{version}还有{days}天{hours}小时"
 
 
-starrail = MhyGameVersion(**env_config.rename_mhy_versions["sr"].dict()).get_version_time
+starrail = MhyGameVersion(
+    **env_config.rename_mhy_versions["sr"].dict()
+).get_version_time
 
 
 genshin = MhyGameVersion(**env_config.rename_mhy_versions["gi"].dict()).get_version_time

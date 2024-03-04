@@ -2,7 +2,7 @@
 from typing import Dict, List, Optional
 
 from nonebot import get_driver
-from pydantic import BaseModel, Extra
+from pydantic import Extra, BaseModel
 
 
 class MhyVersion(BaseModel):

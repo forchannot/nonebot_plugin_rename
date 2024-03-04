@@ -1,25 +1,25 @@
-import asyncio
 import random
-from pathlib import Path
+import asyncio
 from typing import List
+from pathlib import Path
 
-from nonebot import get_bots, get_driver, logger, on_command, require
-from nonebot.adapters.onebot.v11 import (
-    GROUP_ADMIN,
-    GROUP_OWNER,
-    ActionFailed,
-    Bot,
-    GroupMessageEvent,
-    Message,
-    MessageSegment,
-    PrivateMessageEvent,
-)
 from nonebot.drivers import Driver
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
+from nonebot import logger, require, get_bots, get_driver, on_command
+from nonebot.adapters.onebot.v11 import (
+    GROUP_ADMIN,
+    GROUP_OWNER,
+    Bot,
+    Message,
+    ActionFailed,
+    MessageSegment,
+    GroupMessageEvent,
+    PrivateMessageEvent,
+)
 
 from .config import env_config
-from .utils import card_list, choice_card, generate_card_image, read_yaml, write_yaml
+from .utils import card_list, read_yaml, write_yaml, choice_card, generate_card_image
 
 require("nonebot_plugin_apscheduler")
 from nonebot_plugin_apscheduler import scheduler  # noqa: E402
@@ -89,7 +89,9 @@ async def get_group_card(bot: Bot, event: GroupMessageEvent):
     bot_id = bot.self_id
     # 读取群名片数据
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
-    group_nicknames_valid = any(int(gn) > len(card_list) for gn in group_nicknames)  # 判断用户输入的群名片序号是否有效
+    group_nicknames_valid = any(
+        int(gn) > len(card_list) for gn in group_nicknames
+    )  # 判断用户输入的群名片序号是否有效
     # 更新群名片数据
     if group_nicknames_valid:
         await group_card.finish("没有这种群名片哦")
@@ -125,7 +127,9 @@ async def set_group_card(is_handle: bool = False):
 @view_pic.handle()
 async def _(event: GroupMessageEvent):
     img = MessageSegment.image(generate_card_image())
-    await view_pic.finish(message=MessageSegment.text("可以使用<更改群名片 序号>进行设置") + img)
+    await view_pic.finish(
+        message=MessageSegment.text("可以使用<更改群名片 序号>进行设置") + img
+    )
 
 
 # on_command "查看当前群名片"
@@ -153,12 +157,16 @@ async def _(
     if not card_number or not card_number.isdigit():
         await set_card_now.finish("请输入序号或序号输入错误")
     elif card_number not in map(str, range(1, len(card_list) + 1)):
-        await set_card_now.finish("没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧")
+        await set_card_now.finish(
+            "没有这种类型的群名片哦，可以发送[查看群名片列表]命令查看吧"
+        )
     card_names = await choice_card(card_number)
     if env_config.use_nickname_front:
         card_names = f"{NICKNAME}|{card_names}"
     try:
-        await bot.set_group_card(group_id=event.group_id, user_id=int(bot.self_id), card=card_names[:20])
+        await bot.set_group_card(
+            group_id=event.group_id, user_id=int(bot.self_id), card=card_names[:20]
+        )
         logger.info(f"群组{event.group_id}成功设置名片 >> {card_names}")
     except (AttributeError, ActionFailed):
         logger.warning("更改群名片失败，可能是机器人不存在或被风控")
@@ -181,7 +189,11 @@ async def _(bot: Bot, event: GroupMessageEvent):
 async def _(bot: Bot, event: PrivateMessageEvent):
     if env_config.is_one_bot_set_all_group_card:
         result = await set_group_card(is_handle=True)
-        msg = f"群名片设置成功,设置失败的群有\n{' '.join(result)}" if result else "所有群名片设置成功"
+        msg = (
+            f"群名片设置成功,设置失败的群有\n{' '.join(result)}"
+            if result
+            else "所有群名片设置成功"
+        )
         await set_all_group_card.finish(msg)
     set_wrong = []
     group_data = read_yaml(yml_file / "group_card.yaml") or {}
@@ -195,7 +207,11 @@ async def _(bot: Bot, event: PrivateMessageEvent):
         if isinstance(result, Exception):
             logger.warning(f"群{group_id}名片更改失败，错误信息：{result}")
             set_wrong.append(group_id)
-    msg = f"群名片设置成功,设置失败的群有\n{' '.join(set_wrong)}" if set_wrong else "所有群名片设置成功"
+    msg = (
+        f"群名片设置成功,设置失败的群有\n{' '.join(set_wrong)}"
+        if set_wrong
+        else "所有群名片设置成功"
+    )
     await set_all_group_card.finish(msg)
 
 
@@ -214,7 +230,9 @@ async def set_card(group_info: dict, bot_id: str, bot_case) -> List:
                 )
             )
             if env_config.is_show_aps_info_log:
-                logger.info(f"即将为群{group_id}的bot{bot_id}设置群名片后缀{card_names}")
+                logger.info(
+                    f"即将为群{group_id}的bot{bot_id}设置群名片后缀{card_names}"
+                )
     return tasks
 
 

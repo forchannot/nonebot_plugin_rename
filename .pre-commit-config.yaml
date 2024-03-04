@@ -9,10 +9,10 @@ ci:
 repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.2.0
+    rev: v0.3.0
     hooks:
       - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
+        args: [--fix, --exit-non-zero-on-fix, --preview]
       - id: ruff-format
   
   - repo: https://github.com/pycqa/isort
