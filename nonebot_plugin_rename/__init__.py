@@ -1,7 +1,7 @@
 from nonebot.plugin import PluginMetadata
 
-from .config import Config
 from .main import *  # noqa
+from .config import Config
 
 __version__ = "1.7.1"
 __plugin_meta__ = PluginMetadata(
